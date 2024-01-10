@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
+const emailRegex = /^[a-zA-Z0-9._%+-]+@uovt\.ac\.lk$/;
 /* REGISTER USER */
 export const register = async (req, res) => {
   try {
@@ -15,6 +16,13 @@ export const register = async (req, res) => {
       location,
       occupation,
     } = req.body;
+
+    // Check if the email matches the required pattern
+    if (!emailRegex.test(email)) {
+      return res
+        .status(400)
+        .json({ error: "Invalid email format for registration." });
+    }
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);

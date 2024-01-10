@@ -29,12 +29,13 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    friends: {
-      type: Array,
-      default: [],
-    },
+    // friends: {
+    //   type: Array,
+    //   default: [],
+    // },
     location: String,
     occupation: String,
+    phoneNumber: String,
     viewedProfile: Number,
     impressions: Number,
   },
