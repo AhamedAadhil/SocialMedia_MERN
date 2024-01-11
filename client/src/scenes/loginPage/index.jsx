@@ -8,25 +8,25 @@ const LoginPage = () => {
     <Box>
       <Box
         width="100%"
-        backgroundColor={theme.palette.background.alt}
+        backgroundColor="#FA991C"
         p="1rem 6%"
         textAlign="center"
       >
-        <Typography fontWeight="bold" fontSize="32px" color="#FA991C">
-          Uni Connect
+        <Typography fontWeight="bold" fontSize="32px" color="#FFFFFF">
+          UniConnect
         </Typography>
       </Box>
 
       <Box
         width={isNonMobileScreens ? "50%" : "93%"}
-        p="2rem"
+        p="6rem"
         m="2rem auto"
         borderRadius="1.5rem"
         backgroundColor={theme.palette.background.alt}
       >
-        <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
+        {/* <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
           Welcome to UniConnect, Login into your UniConnect Account!
-        </Typography>
+        </Typography> */}
         <Form />
       </Box>
     </Box>

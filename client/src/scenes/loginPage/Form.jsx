@@ -103,7 +103,24 @@ const Form = () => {
   };
 
   return (
-    <Formik
+
+    <Box display="flex" justifyContent="center" alignItems="center">
+      {/* Left Section with Logo and Text */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="left"
+        pr={4} // Adjust the padding as needed
+      >
+        {/* <img src="/path/to/logo.png" alt="Logo" width="100" height="100" /> */}
+        <Typography variant="h1" color="#FA991C" fontWeight="700">UniConnect</Typography>
+        <Typography variant="h5">UniConnect helps to unlock <br/>new knowledge and build connections.</Typography>
+        {/* Add any additional text or components here */}
+      </Box>
+
+      {/* Right Section with Form */}
+      <Formik
       onSubmit={handleFormSubmit}
       initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
       validationSchema={isLogin ? loginSchema : registerSchema}
@@ -269,6 +286,9 @@ const Form = () => {
         </form>
       )}
     </Formik>
+    </Box>
+
+    
   );
 };
 
