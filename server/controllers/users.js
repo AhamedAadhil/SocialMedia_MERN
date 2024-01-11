@@ -99,3 +99,16 @@ export const updateProfile = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+//DELETE PROFILE
+export const deleteProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findByIdAndDelete(id);
+    //delete the associated posts as well
+    await Post.remove({ userId: user._id });
+    res.status(200).json({ message: "User deleted successfully!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
