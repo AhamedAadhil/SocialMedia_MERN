@@ -75,7 +75,7 @@ const UserWidget = ({ userId, picturePath }) => {
             <Typography color={medium}>{friends.length} friends</Typography>
           </Box>
         </FlexBetween>
-        <ManageAccountsOutlined />
+        <ManageAccountsOutlined sx={{ color: "#1C768F" }}/>
       </FlexBetween>
 
       <Divider />
@@ -83,11 +83,11 @@ const UserWidget = ({ userId, picturePath }) => {
       {/* SECOND ROW */}
       <Box p="1rem 0">
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-          <LocationOnOutlined fontSize="large" sx={{ color: main }} />
+          <LocationOnOutlined fontSize="large" sx={{ color: "#1C768F" }} />
           <Typography color={medium}>{location}</Typography>
         </Box>
         <Box display="flex" alignItems="center" gap="1rem">
-          <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
+          <WorkOutlineOutlined fontSize="large" sx={{ color: "#1C768F" }} />
           <Typography color={medium}>{occupation}</Typography>
         </Box>
       </Box>
@@ -95,7 +95,7 @@ const UserWidget = ({ userId, picturePath }) => {
       <Divider />
 
       {/* THIRD ROW */}
-      <Box p="1rem 0">
+      {/* <Box p="1rem 0">
         <FlexBetween mb="0.5rem">
           <Typography color={medium}>Who's viewed your profile</Typography>
           <Typography color={main} fontWeight="500">
@@ -110,7 +110,7 @@ const UserWidget = ({ userId, picturePath }) => {
         </FlexBetween>
       </Box>
 
-      <Divider />
+      <Divider /> */}
 
       {/* FOURTH ROW */}
       <Box p="1rem 0">
@@ -120,7 +120,7 @@ const UserWidget = ({ userId, picturePath }) => {
 
         <FlexBetween gap="1rem" mb="0.5rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/twitter.png" alt="twitter" />
+            <img src="../assets/twitter.png" alt="twitter"/>
             <Box>
               <Typography color={main} fontWeight="500">
                 Twitter
@@ -142,6 +142,48 @@ const UserWidget = ({ userId, picturePath }) => {
             </Box>
           </FlexBetween>
           <EditOutlined sx={{ color: main }} />
+        </FlexBetween>
+      </Box>
+
+      <Divider />
+
+      {/* FIFTH ROW */}
+      <Box p="1rem 0">
+        <Typography fontSize="1rem" color={main} fontWeight="500" mb="1rem">
+          Shortcuts
+        </Typography>
+
+        <FlexBetween gap="1rem" mb="2rem">
+          <FlexBetween gap="1rem">
+            <img src="../assets/saved.png" alt="saved" />
+            <Box>
+              <Typography color={main} fontWeight="500">
+                Saved Items
+              </Typography>
+            </Box>
+          </FlexBetween>
+        </FlexBetween>
+
+        <FlexBetween gap="1rem" mb="2rem">
+          <FlexBetween gap="1rem">
+            <img src="../assets/events.png" alt="Events" />
+            <Box>
+              <Typography color={main} fontWeight="500">
+                Events
+              </Typography>
+            </Box>
+          </FlexBetween>
+        </FlexBetween>
+
+        <FlexBetween gap="1rem" mb="2rem">
+          <FlexBetween gap="1rem">
+            <img src="../assets/groups.png" alt="Groups" />
+            <Box>
+              <Typography color={main} fontWeight="500">
+                Groups
+              </Typography>
+            </Box>
+          </FlexBetween>
         </FlexBetween>
       </Box>
     </WidgetWrapper>

@@ -44,19 +44,26 @@ const Navbar = () => {
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">
+        <img
+              src="../assets/logo.png"
+              alt="twitter"
+              height="50"
+              width="50"
+              style={{ display: "block" }}
+          />
         <Typography
           fontWeight="bold"
           fontSize="clamp(1rem, 2rem, 2.25rem)"
-          color="primary"
+          color="#FA991C"
           onClick={() => navigate("/home")}
           sx={{
             "&:hover": {
-              color: primaryLight,
+              color: "#1C768F",
               cursor: "pointer",
             },
           }}
         >
-          Sociopedia
+          UniConnect
         </Typography>
         {isNonMobileScreens && (
           <FlexBetween

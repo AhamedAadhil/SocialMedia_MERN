@@ -111,7 +111,8 @@ const Form = () => {
         flexDirection="column"
         justifyContent="center"
         alignItems="left"
-        pr={4} // Adjust the padding as needed
+        pr={6} // Adjust the padding as needed
+        
       >
         {/* <img src="/path/to/logo.png" alt="Logo" width="100" height="100" /> */}
         <Typography variant="h1" color="#FA991C" fontWeight="700">UniConnect</Typography>
@@ -136,6 +137,21 @@ const Form = () => {
         resetForm,
       }) => (
         <form onSubmit={handleSubmit}>
+          <div style={{ textAlign: "center", marginBottom:"40px"}}>
+            <img
+              src="../assets/logo.png"
+              alt="twitter"
+              height="90"
+              width="90"
+              style={{ display: "block", margin: "0 auto" }}
+            />
+            <Typography variant="h3" color="#000000" fontWeight="500">UniConnect</Typography>
+          </div>
+          {isRegister && (
+          <>
+          <Typography variant="h4" color="#000000" fontWeight="500" marginBottom="25px">Sign Up</Typography>
+          </>
+          )}
           <Box
             display="grid"
             gap="30px"
