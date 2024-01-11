@@ -32,20 +32,44 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
-/* FILE STORAGE */
-const storage = multer.diskStorage({
+// /* FILE STORAGE */
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "public/assets");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname);
+//   },
+// });
+// const upload = multer({ storage });
+
+/* FILE STORAGE FOR IMAGES */
+const imageStorage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/assets");
+    cb(null, "public/assets/picture");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
   },
 });
-const upload = multer({ storage });
+
+/* FILE STORAGE FOR VIDEOS */
+const videoStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/assets/videos");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+
+const imageUpload = multer({ storage: imageStorage }).single("picture");
+const videoUpload = multer({ storage: videoStorage }).single("video");
 
 /* ROUTES WITH FILES */
-app.post("/auth/register", upload.single("picture"), register);
-app.post("/posts", verifyToken, upload.single("picture"), createPost);
+app.post("/auth/register", imageUpload, register);
+// app.post("/posts", verifyToken, upload.single("picture"), createPost);
+app.post("/posts", verifyToken, [imageUpload, videoUpload], createPost);
 
 /* ROUTES */
 app.use("/auth", authRoutes);
