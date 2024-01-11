@@ -1,10 +1,11 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
+import Events from "../models/Event.js";
 
 /* CREATE */
 export const createPost = async (req, res) => {
   try {
-    const { userId, description, picturePath, videoPath, event } = req.body;
+    const { userId, description, picturePath, videoPath } = req.body;
     const user = await User.findById(userId);
     const newPost = new Post({
       userId,
@@ -15,7 +16,6 @@ export const createPost = async (req, res) => {
       userPicturePath: user.picturePath,
       picturePath,
       videoPath,
-      event,
       likes: {},
       comments: [],
     });
@@ -100,5 +100,30 @@ export const addComment = async (req, res) => {
     res.status(201).json(post);
   } catch (err) {
     res.status(404).json({ message: err.message });
+  }
+};
+
+//EVENT
+export const createEvent = async (req, res) => {
+  try {
+    const { userId, title, description, startDate, time } = req.body;
+    const user = await User.findById(userId);
+    //Checking for required fields
+    if (!title || !description || !startDate || !time) {
+      throw new Error("Please provide all the details");
+    }
+    //Creating an Event
+    const newEvent = new Events({
+      userId,
+      title,
+      description,
+      startDate,
+      time,
+    });
+    await newEvent.save();
+    const event = await Events.find();
+    res.status(201).json(event);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
   }
 };

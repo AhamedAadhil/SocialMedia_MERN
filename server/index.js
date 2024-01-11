@@ -13,6 +13,7 @@ import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
 import { register } from "./controllers/auth.js";
 import { createPost } from "./controllers/posts.js";
+import { updateProfile } from "./controllers/users.js";
 import { verifyToken } from "./middleware/auth.js";
 import User from "./models/User.js";
 import Post from "./models/Post.js";
@@ -70,6 +71,7 @@ const videoUpload = multer({ storage: videoStorage }).single("video");
 app.post("/auth/register", imageUpload, register);
 // app.post("/posts", verifyToken, upload.single("picture"), createPost);
 app.post("/posts", verifyToken, [imageUpload, videoUpload], createPost);
+app.put("/users/:id/update-profile", verifyToken, imageUpload, updateProfile);
 
 /* ROUTES */
 app.use("/auth", authRoutes);
