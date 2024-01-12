@@ -38,6 +38,11 @@ const postSchema = mongoose.Schema(
         },
       },
     ],
+    shares: [
+      {
+        userId: String,
+      },
+    ],
   },
   { timestamps: true }
 );

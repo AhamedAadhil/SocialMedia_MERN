@@ -127,3 +127,50 @@ export const createEvent = async (req, res) => {
     res.status(404).json({ error: error.message });
   }
 };
+
+// SHARE POST
+export const sharePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    const originalPost = await Post.findById(id);
+
+    if (!originalPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    // Check if the post has already been shared by the current user
+    const isShared = originalPost.shares.some(
+      (share) => share.userId === userId
+    );
+    if (!isShared) {
+      originalPost.shares.push({ userId });
+      await originalPost.save();
+
+      // Create a new post based on the shared post
+      const newPost = new Post({
+        userId,
+        firstName: originalPost.firstName,
+        lastName: originalPost.lastName,
+        location: originalPost.location,
+        description: originalPost.description,
+        userPicturePath: originalPost.userPicturePath,
+        picturePath: originalPost.picturePath,
+        videoPath: originalPost.videoPath,
+        likes: {},
+        comments: [],
+        shares: [], // Clear shares to avoid duplication
+      });
+
+      await newPost.save();
+    }
+
+    const post = await Post.find();
+    res.status(201).json(post);
+    // const updatedPost = await Post.findById(id);
+    // res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
