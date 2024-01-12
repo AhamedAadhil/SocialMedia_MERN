@@ -103,7 +103,25 @@ const Form = () => {
   };
 
   return (
-    <Formik
+
+    <Box display="flex" justifyContent="center" alignItems="center">
+      {/* Left Section with Logo and Text */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="left"
+        pr={6} // Adjust the padding as needed
+        
+      >
+        {/* <img src="/path/to/logo.png" alt="Logo" width="100" height="100" /> */}
+        <Typography variant="h1" color="#FA991C" fontWeight="700">UniConnect</Typography>
+        <Typography variant="h5">UniConnect helps to unlock <br/>new knowledge and build connections.</Typography>
+        {/* Add any additional text or components here */}
+      </Box>
+
+      {/* Right Section with Form */}
+      <Formik
       onSubmit={handleFormSubmit}
       initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
       validationSchema={isLogin ? loginSchema : registerSchema}
@@ -119,6 +137,21 @@ const Form = () => {
         resetForm,
       }) => (
         <form onSubmit={handleSubmit}>
+          <div style={{ textAlign: "center", marginBottom:"40px"}}>
+            <img
+              src="../assets/logo.png"
+              alt="twitter"
+              height="90"
+              width="90"
+              style={{ display: "block", margin: "0 auto" }}
+            />
+            <Typography variant="h3" color="#000000" fontWeight="500">UniConnect</Typography>
+          </div>
+          {isRegister && (
+          <>
+          <Typography variant="h4" color="#000000" fontWeight="500" marginBottom="25px">Sign Up</Typography>
+          </>
+          )}
           <Box
             display="grid"
             gap="30px"
@@ -240,9 +273,9 @@ const Form = () => {
               sx={{
                 m: "2rem 0",
                 p: "1rem",
-                backgroundColor: palette.primary.main,
+                backgroundColor: "#FA991C",
                 color: palette.background.alt,
-                "&:hover": { color: palette.primary.main },
+                "&:hover": { color: "#1C768F" },
               }}
             >
               {isLogin ? "LOGIN" : "REGISTER"}
@@ -254,10 +287,10 @@ const Form = () => {
               }}
               sx={{
                 textDecoration: "underline",
-                color: palette.primary.main,
+                color: "#FA991C",
                 "&:hover": {
                   cursor: "pointer",
-                  color: palette.primary.light,
+                  color: "#1C768F",
                 },
               }}
             >
@@ -269,6 +302,9 @@ const Form = () => {
         </form>
       )}
     </Formik>
+    </Box>
+
+    
   );
 };
 
