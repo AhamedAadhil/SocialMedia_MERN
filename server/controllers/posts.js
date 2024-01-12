@@ -38,6 +38,7 @@ export const getFeedPosts = async (req, res) => {
   }
 };
 
+/* GET USER POSTS */
 export const getUserPosts = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -74,7 +75,7 @@ export const likePost = async (req, res) => {
   }
 };
 
-//ADD COMMENTS
+/* ADD COMMENTS */
 export const addComment = async (req, res) => {
   try {
     const { id } = req.params;
@@ -103,7 +104,7 @@ export const addComment = async (req, res) => {
   }
 };
 
-//EVENT
+/* EVENT */
 export const createEvent = async (req, res) => {
   try {
     const { userId, title, description, startDate, time } = req.body;
@@ -128,7 +129,7 @@ export const createEvent = async (req, res) => {
   }
 };
 
-// SHARE POST
+/* SHARE POST */
 export const sharePost = async (req, res) => {
   try {
     const { id } = req.params;
@@ -168,6 +169,34 @@ export const sharePost = async (req, res) => {
 
     const post = await Post.find();
     res.status(201).json(post);
+    // const updatedPost = await Post.findById(id);
+    // res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
+/* SAVE POST */
+export const savePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    // Check if the post has already been saved by the current user
+    const isSaved = post.saves.some((save) => save.userId === userId);
+    if (!isSaved) {
+      post.saves.push({ userId });
+      await post.save();
+    }
+
+    const allPost = await Post.find();
+    res.status(201).json(allPost);
     // const updatedPost = await Post.findById(id);
     // res.status(200).json(updatedPost);
   } catch (err) {

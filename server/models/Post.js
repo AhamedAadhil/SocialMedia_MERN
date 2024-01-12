@@ -43,6 +43,11 @@ const postSchema = mongoose.Schema(
         userId: String,
       },
     ],
+    saves: [
+      {
+        userId: String,
+      },
+    ],
   },
   { timestamps: true }
 );
