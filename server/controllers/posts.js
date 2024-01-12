@@ -190,7 +190,9 @@ export const savePost = async (req, res) => {
 
     // Check if the post has already been saved by the current user
     const isSaved = post.saves.some((save) => save.userId === userId);
-    if (!isSaved) {
+    if (isSaved) {
+      post.saves = post.saves.filter((save) => save.userId !== userId);
+    } else {
       post.saves.push({ userId });
       await post.save();
     }

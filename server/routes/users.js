@@ -19,6 +19,6 @@ router.get("/:id", verifyToken, getUser);
 // router.put("/:id/update-profile", verifyToken, updateProfile);
 
 //DELETE
-router.delete(":id/delete", verifyToken, deleteProfile);
+router.delete("/:id/delete", verifyToken, deleteProfile);
 
 export default router;

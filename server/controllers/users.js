@@ -1,4 +1,6 @@
 import User from "../models/User.js";
+import Post from "../models/Post.js";
+import bcrypt from "bcrypt";
 
 /* READ */
 export const getUser = async (req, res) => {
@@ -104,9 +106,16 @@ export const updateProfile = async (req, res) => {
 export const deleteProfile = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findByIdAndDelete(id);
-    //delete the associated posts as well
-    await Post.remove({ userId: user._id });
+    const user = await User.findById(id);
+    if (user) {
+      //delete the associated posts as well
+      await Post.deleteMany({ userId: user._id });
+    }
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
     res.status(200).json({ message: "User deleted successfully!" });
   } catch (error) {
     res.status(400).json({ error: error.message });
