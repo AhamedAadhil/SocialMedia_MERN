@@ -31,10 +31,7 @@ app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
-app.use(
-  "/assets",
-  express.static(path.join(__dirname, "public/assets/picture"))
-);
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 // /* FILE STORAGE */
 // const storage = multer.diskStorage({
@@ -73,7 +70,12 @@ const videoUpload = multer({ storage: videoStorage }).single("video");
 /* ROUTES WITH FILES */
 app.post("/auth/register", imageUpload, register);
 // app.post("/posts", verifyToken, upload.single("picture"), createPost);
-app.post("/posts", verifyToken, [imageUpload, videoUpload], createPost);
+app.post(
+  "/posts/create",
+  verifyToken,
+  [imageUpload || videoUpload],
+  createPost
+);
 app.put("/users/:id/update-profile", verifyToken, imageUpload, updateProfile);
 
 /* ROUTES */

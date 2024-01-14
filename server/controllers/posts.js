@@ -6,7 +6,13 @@ import Events from "../models/Event.js";
 export const createPost = async (req, res) => {
   try {
     const { userId, description, picturePath, videoPath } = req.body;
+    console.log("Received UserId", userId);
+    console.log("Received Body", req.body);
     const user = await User.findById(userId);
+    if (!user) {
+      // Handle the case when the user is not found
+      return res.status(404).json({ message: "User not found" });
+    }
     const newPost = new Post({
       userId,
       firstName: user.firstName,

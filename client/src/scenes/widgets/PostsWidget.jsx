@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
 import PostWidget from "./PostWidget";
 import { Typography } from "@mui/material";
+import toast from "react-hot-toast";
 
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
@@ -11,26 +12,50 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const token = useSelector((state) => state.token);
 
   const getPosts = async () => {
-    const response = await fetch("http://localhost:3001/posts", {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    console.log("FROM ALL DATA", data);
-    dispatch(setPosts({ posts: data }));
+    try {
+      const response = await fetch("http://localhost:3001/posts", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        toast.error("Error fetching Feeds");
+
+        console.log(errorData);
+        throw new Error(
+          `Failed to fetch posts. Status: ${response.status}, Message: ${errorData.message}`
+        );
+      }
+      const data = await response.json();
+      console.log("FROM ALL DATA", data);
+      dispatch(setPosts({ posts: data }));
+    } catch (error) {
+      console.error("Error fetching posts:", error.message);
+      toast.error(error.message);
+    }
   };
 
   const getUserPosts = async () => {
-    const response = await fetch(
-      `http://localhost:3001/posts/${userId}/posts`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
+    try {
+      const response = await fetch(
+        `http://localhost:3001/posts/${userId}/posts`,
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (!response.ok) {
+        toast.error("Unable to fetch user posts");
+        return;
       }
-    );
-    const data = await response.json();
-    console.log("FROM USER DATA", data);
-    dispatch(setPosts({ posts: data }));
+      const data = await response.json();
+      console.log("FROM USER DATA", data);
+      dispatch(setPosts({ posts: data }));
+    } catch (error) {
+      console.error("Error fetching user posts:", error.message);
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
