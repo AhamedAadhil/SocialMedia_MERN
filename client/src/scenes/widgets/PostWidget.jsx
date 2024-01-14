@@ -22,6 +22,8 @@ const PostWidget = ({
   userPicturePath,
   likes,
   comments,
+  shares,
+  saves,
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
@@ -64,7 +66,7 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`http://localhost:3001/assets/${picturePath}`}
+          src={`http://localhost:3001/public/assets/picture/${picturePath}`}
         />
       )}
       <FlexBetween mt="0.25rem">
@@ -94,14 +96,22 @@ const PostWidget = ({
       </FlexBetween>
       {isComments && (
         <Box mt="0.5rem">
-          {comments.map((comment, i) => (
-            <Box key={`${name}-${i}`}>
-              <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
-              </Typography>
-            </Box>
-          ))}
+          {Array.isArray(comments) && comments.length > 0 ? (
+            comments.map((comment, i) => (
+              <Box key={`${name}-${i}`}>
+                <Divider />
+                <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+                  {`${comment.firstName || ""} ${comment.lastName || ""}: ${
+                    comment.commentText || ""
+                  }`}
+                </Typography>
+              </Box>
+            ))
+          ) : (
+            <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+              No comments available.
+            </Typography>
+          )}
           <Divider />
         </Box>
       )}
