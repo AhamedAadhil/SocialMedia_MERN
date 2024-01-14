@@ -4,7 +4,7 @@ import {
   LocationOnOutlined,
   WorkOutlineOutlined,
 } from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme} from "@mui/material";
+import { Box, Typography, Divider, useTheme } from "@mui/material";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -75,7 +75,7 @@ const UserWidget = ({ userId, picturePath }) => {
             <Typography color={medium}>{friends.length} friends</Typography>
           </Box>
         </FlexBetween>
-        <ManageAccountsOutlined sx={{ color: "#1C768F" }}/>
+        <ManageAccountsOutlined sx={{ color: "#1C768F" }} />
       </FlexBetween>
 
       <Divider />
@@ -95,7 +95,7 @@ const UserWidget = ({ userId, picturePath }) => {
       <Divider />
 
       {/* THIRD ROW */}
-      {/* <Box p="1rem 0">
+      <Box p="1rem 0">
         <FlexBetween mb="0.5rem">
           <Typography color={medium}>Who's viewed your profile</Typography>
           <Typography color={main} fontWeight="500">
@@ -110,7 +110,7 @@ const UserWidget = ({ userId, picturePath }) => {
         </FlexBetween>
       </Box>
 
-      <Divider /> */}
+      <Divider />
 
       {/* FOURTH ROW */}
       <Box p="1rem 0">
@@ -120,7 +120,7 @@ const UserWidget = ({ userId, picturePath }) => {
 
         <FlexBetween gap="1rem" mb="0.5rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/twitter.png" alt="twitter"/>
+            <img src="../assets/twitter.png" alt="twitter" />
             <Box>
               <Typography color={main} fontWeight="500">
                 Twitter
@@ -181,6 +181,17 @@ const UserWidget = ({ userId, picturePath }) => {
             <Box>
               <Typography color={main} fontWeight="500">
                 Groups
+              </Typography>
+            </Box>
+          </FlexBetween>
+        </FlexBetween>
+
+        <FlexBetween gap="1rem" mb="2rem">
+          <FlexBetween gap="1rem">
+            <img src="../assets/groups.png" alt="Groups" />
+            <Box>
+              <Typography color={main} fontWeight="500">
+                GPA Calculator
               </Typography>
             </Box>
           </FlexBetween>
