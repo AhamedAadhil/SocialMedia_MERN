@@ -33,50 +33,66 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/public", express.static(path.join(__dirname, "public")));
 
-// /* FILE STORAGE */
-// const storage = multer.diskStorage({
+// /* FILE STORAGE FOR IMAGES */
+// const imageStorage = multer.diskStorage({
 //   destination: function (req, file, cb) {
-//     cb(null, "public/assets");
+//     cb(null, "public/assets/picture");
 //   },
 //   filename: function (req, file, cb) {
 //     cb(null, file.originalname);
 //   },
 // });
-// const upload = multer({ storage });
 
-/* FILE STORAGE FOR IMAGES */
-const imageStorage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/assets/picture");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
+// /* FILE STORAGE FOR VIDEOS */
+// const videoStorage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "public/assets/videos");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname);
+//   },
+// });
 
-/* FILE STORAGE FOR VIDEOS */
-const videoStorage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/assets/videos");
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      if (file.fieldname === "picture") {
+        cb(null, "public/assets/picture");
+      } else if (file.fieldname === "video") {
+        cb(null, "public/assets/videos");
+      }
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+    },
+  }),
+  fileFilter: function (req, file, cb) {
+    const allowedFileTypes = /jpeg|jpg|png|mp4/;
+    const isAllowed = allowedFileTypes.test(
+      path.extname(file.originalname).toLowerCase()
+    );
+    if (isAllowed) {
+      return cb(null, true);
+    } else {
+      cb(
+        new Error(
+          "Invalid file type. Only JPEG, JPG, PNG, and MP4 files are allowed."
+        )
+      );
+    }
   },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
+}).fields([
+  { name: "picture", maxCount: 1 },
+  { name: "video", maxCount: 1 },
+]);
 
-const imageUpload = multer({ storage: imageStorage }).single("picture");
-const videoUpload = multer({ storage: videoStorage }).single("video");
+// const imageUpload = multer({ storage: imageStorage }).single("picture");
+// const videoUpload = multer({ storage: videoStorage }).single("video");
 
 /* ROUTES WITH FILES */
-app.post("/auth/register", imageUpload, register);
-// app.post("/posts", verifyToken, upload.single("picture"), createPost);
-app.post(
-  "/posts/create",
-  verifyToken,
-  [imageUpload || videoUpload],
-  createPost
-);
-app.put("/users/:id/update-profile", verifyToken, imageUpload, updateProfile);
+app.post("/auth/register", upload, register);
+app.post("/posts/create", verifyToken, upload, createPost);
+app.put("/users/:id/update-profile", verifyToken, upload, updateProfile);
 
 /* ROUTES */
 app.use("/auth", authRoutes);

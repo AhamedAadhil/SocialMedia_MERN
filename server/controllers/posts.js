@@ -6,8 +6,7 @@ import Events from "../models/Event.js";
 export const createPost = async (req, res) => {
   try {
     const { userId, description, picturePath, videoPath } = req.body;
-    console.log("Received UserId", userId);
-    console.log("Received Body", req.body);
+    console.log("Received videoPath", videoPath);
     const user = await User.findById(userId);
     if (!user) {
       // Handle the case when the user is not found

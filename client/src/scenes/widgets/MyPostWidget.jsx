@@ -28,7 +28,9 @@ import { setPosts } from "state";
 const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
+  const [isVideo, setIsVideo] = useState(false);
   const [image, setImage] = useState(null);
+  const [video, setVideo] = useState(null);
   const [post, setPost] = useState("");
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
@@ -45,10 +47,10 @@ const MyPostWidget = ({ picturePath }) => {
       formData.append("picture", image);
       formData.append("picturePath", image.name);
     }
-    for (const pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
+    if (video) {
+      formData.append("video", video);
+      formData.append("videoPath", video.name);
     }
-    console.log(formData);
     const response = await fetch(`http://localhost:3001/posts/create`, {
       method: "POST",
       headers: {
@@ -57,9 +59,9 @@ const MyPostWidget = ({ picturePath }) => {
       body: formData,
     });
     const posts = await response.json();
-    console.log(posts);
     dispatch(setPosts({ posts }));
     setImage(null);
+    setVideo(null);
     setPost("");
   };
 
@@ -123,7 +125,51 @@ const MyPostWidget = ({ picturePath }) => {
           </Dropzone>
         </Box>
       )}
-
+      {/* VIDEO */}
+      {isVideo && (
+        <Box
+          border={`1px solid ${medium}`}
+          borderRadius="5px"
+          mt="1rem"
+          p="1rem"
+        >
+          <Dropzone
+            acceptedFiles=".mp4" // Specify the accepted video format(s)
+            multiple={false}
+            onDrop={(acceptedFiles) => setVideo(acceptedFiles[0])}
+          >
+            {({ getRootProps, getInputProps }) => (
+              <FlexBetween>
+                <Box
+                  {...getRootProps()}
+                  border={`2px dashed ${palette.primary.main}`}
+                  p="1rem"
+                  width="100%"
+                  sx={{ "&:hover": { cursor: "pointer" } }}
+                >
+                  <input {...getInputProps()} />
+                  {!video ? (
+                    <p>Add Video Here</p>
+                  ) : (
+                    <FlexBetween>
+                      <Typography>{video.name}</Typography>
+                      <EditOutlined />
+                    </FlexBetween>
+                  )}
+                </Box>
+                {video && (
+                  <IconButton
+                    onClick={() => setVideo(null)}
+                    sx={{ width: "15%" }}
+                  >
+                    <DeleteOutlined />
+                  </IconButton>
+                )}
+              </FlexBetween>
+            )}
+          </Dropzone>
+        </Box>
+      )}
       <Divider sx={{ margin: "1.25rem 0" }} />
 
       <FlexBetween>
@@ -137,13 +183,18 @@ const MyPostWidget = ({ picturePath }) => {
           </Typography>
         </FlexBetween>
 
+        <FlexBetween gap="0.25rem" onClick={() => setIsVideo(!isVideo)}>
+          <OndemandVideoOutlined sx={{ color: mediumMain }} />
+          <Typography
+            color={mediumMain}
+            sx={{ "&:hover": { cursor: "pointer", color: medium } }}
+          >
+            Video
+          </Typography>
+        </FlexBetween>
+
         {isNonMobileScreens ? (
           <>
-            <FlexBetween gap="0.25rem">
-              <OndemandVideoOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Video</Typography>
-            </FlexBetween>
-
             <FlexBetween gap="0.25rem">
               <EventAvailableOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Event</Typography>
