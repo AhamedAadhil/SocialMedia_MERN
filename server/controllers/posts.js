@@ -109,13 +109,13 @@ export const addComment = async (req, res) => {
   }
 };
 
-/* EVENT */
+/* CREATE EVENT */
 export const createEvent = async (req, res) => {
   try {
-    const { userId, title, description, startDate, time } = req.body;
+    const { userId, title, description, startDate, time, venue } = req.body;
     const user = await User.findById(userId);
     //Checking for required fields
-    if (!title || !description || !startDate || !time) {
+    if (!title || !description || !startDate || !time || !venue) {
       throw new Error("Please provide all the details");
     }
     //Creating an Event
@@ -125,12 +125,23 @@ export const createEvent = async (req, res) => {
       description,
       startDate,
       time,
+      venue,
     });
     await newEvent.save();
     const event = await Events.find();
     res.status(201).json(event);
   } catch (error) {
     res.status(404).json({ error: error.message });
+  }
+};
+
+/* GET EVENTS */
+export const getEvents = async (req, res) => {
+  try {
+    const event = await Events.find();
+    res.status(200).json(event);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
   }
 };
 

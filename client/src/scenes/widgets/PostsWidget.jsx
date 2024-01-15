@@ -54,7 +54,6 @@ const PostsWidget = ({ userId, isProfile = false }) => {
         return;
       }
       const data = await response.json();
-      console.log("FROM USER DATA", data);
       dispatch(
         setPosts({
           posts: data.sort(

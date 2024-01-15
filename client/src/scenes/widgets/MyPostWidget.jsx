@@ -24,6 +24,7 @@ import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
+import CreateEventForm from "components/CreateEvent";
 
 const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch();
@@ -69,6 +70,16 @@ const MyPostWidget = ({ picturePath }) => {
     setImage(null);
     setVideo(null);
     setPost("");
+  };
+
+  const [isCreateEventModalOpen, setCreateEventModalOpen] = useState(false);
+
+  const handleOpenCreateEventModal = () => {
+    setCreateEventModalOpen(true);
+  };
+
+  const handleCloseCreateEventModal = () => {
+    setCreateEventModalOpen(false);
   };
 
   return (
@@ -199,12 +210,24 @@ const MyPostWidget = ({ picturePath }) => {
           </Typography>
         </FlexBetween>
 
+        <FlexBetween gap="0.25rem" onClick={handleOpenCreateEventModal}>
+          {/* Create Group Modal */}
+
+          <EventAvailableOutlined sx={{ color: mediumMain }} />
+          <Typography
+            color={mediumMain}
+            sx={{ "&:hover": { cursor: "pointer", color: medium } }}
+          >
+            Event
+          </Typography>
+        </FlexBetween>
+
         {isNonMobileScreens ? (
           <>
-            <FlexBetween gap="0.25rem">
+            {/* <FlexBetween gap="0.25rem">
               <EventAvailableOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Event</Typography>
-            </FlexBetween>
+            </FlexBetween> */}
 
             <FlexBetween gap="0.25rem">
               <MicOutlined sx={{ color: mediumMain }} />
@@ -218,7 +241,7 @@ const MyPostWidget = ({ picturePath }) => {
         )}
 
         <Button
-          // disabled={!post}
+          disabled={!post}
           onClick={handlePost}
           sx={{
             color: "#FBF3F2",
@@ -229,6 +252,10 @@ const MyPostWidget = ({ picturePath }) => {
           POST
         </Button>
       </FlexBetween>
+      <CreateEventForm
+        isOpen={isCreateEventModalOpen}
+        onClose={handleCloseCreateEventModal}
+      />
     </WidgetWrapper>
   );
 };
