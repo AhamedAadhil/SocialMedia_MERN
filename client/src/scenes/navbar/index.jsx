@@ -42,10 +42,10 @@ const Navbar = () => {
   const fullName = `${user.firstName} ${user.lastName}`;
 
   return (
-    <FlexBetween padding="1rem 6%" backgroundColor={alt}>
+    <FlexBetween padding="1rem 6%" backgroundColor="#FA991C">
       <FlexBetween gap="1.75rem">
         <img
-              src="../assets/logo.png"
+              src="../assets/navLogo.png"
               alt="twitter"
               height="50"
               width="50"
@@ -54,7 +54,7 @@ const Navbar = () => {
         <Typography
           fontWeight="bold"
           fontSize="clamp(1rem, 2rem, 2.25rem)"
-          color="#FA991C"
+          color="#FFFFFF"
           onClick={() => navigate("/home")}
           sx={{
             "&:hover": {
@@ -85,14 +85,14 @@ const Navbar = () => {
         <FlexBetween gap="2rem">
           <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === "dark" ? (
-              <DarkMode sx={{ fontSize: "25px" }} />
+              <DarkMode sx={{fontSize: "25px" }} />
             ) : (
               <LightMode sx={{ color: dark, fontSize: "25px" }} />
             )}
           </IconButton>
-          <Message sx={{ fontSize: "25px" }} />
-          <Notifications sx={{ fontSize: "25px" }} />
-          <Help sx={{ fontSize: "25px" }} />
+          <Message sx={{ fontSize: "25px", color:"white" }} />
+          <Notifications sx={{ fontSize: "25px", color:"white"}} />
+          <Help sx={{ fontSize: "25px", color:"white" }} />
           <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}

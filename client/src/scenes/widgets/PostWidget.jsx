@@ -4,8 +4,10 @@ import {
   FavoriteOutlined,
   ShareOutlined,
   BookmarkBorderOutlined,
+  Send,
+  DeleteForeverOutlined,
 } from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Divider, IconButton, TextField, Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -72,12 +74,19 @@ const PostWidget = ({
 
   return (
     <WidgetWrapper m="2rem 0">
+      <FlexBetween>
+
       <Friend
         friendId={postUserId}
         name={name}
         subtitle={location}
         userPicturePath={userPicturePath}
       />
+      <DeleteForeverOutlined sx={{fontSize:"2rem" ,color:"#1C768F" , "&:hover": {
+              color: "red",
+              cursor: "pointer",
+            }, }}/>
+      </FlexBetween>
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
       </Typography>
@@ -149,6 +158,13 @@ const PostWidget = ({
       </FlexBetween>
       {isComments && (
         <Box mt="0.5rem">
+          <FlexBetween>
+
+          <TextField 
+          label="Add Comment"
+          sx={{width:"38rem"}}/>
+          <Send sx={{fontSize:"2rem", color:"#1C768F"}}/>
+          </FlexBetween>
           {Array.isArray(comments) && comments.length > 0 ? (
             comments.map((comment, i) => (
               <Box key={`${name}-${i}`}>
@@ -165,6 +181,7 @@ const PostWidget = ({
               No comments available.
             </Typography>
           )}
+          
           <Divider />
         </Box>
       )}
