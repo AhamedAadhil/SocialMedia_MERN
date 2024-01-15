@@ -15,7 +15,6 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
-import EditProfile from "components/EditProfile";
 import toast from "react-hot-toast";
 
 const registerSchema = yup.object().shape({
@@ -131,9 +130,30 @@ const Form = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center">
+    <Box display="flex" justifyContent="center" alignItems="center"
+    >
       {/* Left Section with Logo and Text */}
-      <Box
+      {isRegister ? (
+        <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="left"
+        pr={6} // Adjust the padding as needed
+        
+      >
+        {/* <img src="/path/to/logo.png" alt="Logo" width="100" height="100" /> */}
+        <Typography variant="h1" color="#FA991C" fontWeight="700">
+          UniConnect
+        </Typography>
+        <Typography variant="h5">
+          UniConnect helps to unlock <br />
+          new knowledge and build connections.
+        </Typography>
+        {/* Add any additional text or components here */}
+      </Box>
+      ):(
+        <Box
         display="flex"
         flexDirection="column"
         justifyContent="center"
@@ -150,6 +170,8 @@ const Form = () => {
         </Typography>
         {/* Add any additional text or components here */}
       </Box>
+      )}
+     
 
       {/* Right Section with Form */}
       <Formik
@@ -168,6 +190,8 @@ const Form = () => {
           resetForm,
         }) => (
           <form onSubmit={handleSubmit}>
+
+            
             <div style={{ textAlign: "center", marginBottom: "40px" }}>
               <img
                 src="../assets/logo.png"
@@ -184,7 +208,7 @@ const Form = () => {
               <>
                 <Typography
                   variant="h4"
-                  color="#000000"
+                  color="blue"
                   fontWeight="500"
                   marginBottom="25px"
                 >
