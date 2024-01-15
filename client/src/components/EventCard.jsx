@@ -9,7 +9,7 @@ import FlexBetween2 from "components/FlexBetween2";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useEffect } from "react";
 import { setEvent } from "state";
 
@@ -23,7 +23,7 @@ const AdvertWidget = () => {
   const token = useSelector((state) => state.token);
   const events = useSelector((state) => state.events);
 
-  const handleEvents = async () => {
+  const handleEvents = useCallback(async () => {
     try {
       const getEvents = await fetch("http://localhost:3001/posts/get-events", {
         method: "GET",
@@ -50,11 +50,11 @@ const AdvertWidget = () => {
       console.error("Error fetching events:", error);
       toast.error(error.message);
     }
-  };
+  }, [token, dispatch, events]);
 
   useEffect(() => {
     handleEvents();
-  }, [token]);
+  }, [handleEvents]);
 
   return (
     <WidgetWrapper>

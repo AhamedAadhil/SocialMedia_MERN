@@ -28,8 +28,6 @@ const AdvertWidget = () => {
       </FlexBetween>
       {/* Other content */}
       <EventCard />
-      <EventCard />
-
       {/* Create Group Modal */}
       <CreateEventForm
         isOpen={isCreateEventModalOpen}
