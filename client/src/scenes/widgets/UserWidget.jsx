@@ -3,6 +3,12 @@ import {
   EditOutlined,
   LocationOnOutlined,
   WorkOutlineOutlined,
+  Bookmark,
+  LinkedIn,
+  Twitter,
+  Event,
+  Groups2,
+  Calculate,
 } from "@mui/icons-material";
 import { Box, Typography, Divider, useTheme} from "@mui/material";
 import UserImage from "components/UserImage";
@@ -72,7 +78,7 @@ const UserWidget = ({ userId, picturePath }) => {
             >
               {firstName} {lastName}
             </Typography>
-            <Typography color={medium}>{friends.length} friends</Typography>
+            {/* <Typography color={medium}>{friends.length} friends</Typography> */}
           </Box>
         </FlexBetween>
         <ManageAccountsOutlined sx={{ color: "#1C768F" }}/>
@@ -95,7 +101,7 @@ const UserWidget = ({ userId, picturePath }) => {
       <Divider />
 
       {/* THIRD ROW */}
-      {/* <Box p="1rem 0">
+      <Box p="1rem 0">
         <FlexBetween mb="0.5rem">
           <Typography color={medium}>Who's viewed your profile</Typography>
           <Typography color={main} fontWeight="500">
@@ -110,7 +116,7 @@ const UserWidget = ({ userId, picturePath }) => {
         </FlexBetween>
       </Box>
 
-      <Divider /> */}
+      <Divider />
 
       {/* FOURTH ROW */}
       <Box p="1rem 0">
@@ -120,7 +126,8 @@ const UserWidget = ({ userId, picturePath }) => {
 
         <FlexBetween gap="1rem" mb="0.5rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/twitter.png" alt="twitter"/>
+            {/* <img src="../assets/twitter.png" alt="twitter"/> */}
+            <Twitter sx={{ color: "#1C768F", fontSize:"2rem"}}/>
             <Box>
               <Typography color={main} fontWeight="500">
                 Twitter
@@ -133,7 +140,8 @@ const UserWidget = ({ userId, picturePath }) => {
 
         <FlexBetween gap="1rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/linkedin.png" alt="linkedin" />
+            {/* <img src="../assets/linkedin.png" alt="linkedin" /> */}
+            <LinkedIn sx={{ color: "#1C768F", fontSize:"2rem"}}/>
             <Box>
               <Typography color={main} fontWeight="500">
                 Linkedin
@@ -155,7 +163,8 @@ const UserWidget = ({ userId, picturePath }) => {
 
         <FlexBetween gap="1rem" mb="2rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/saved.png" alt="saved" />
+            {/* <img src="../assets/saved.png" alt="saved" /> */}
+            <Bookmark sx={{ color: "#1C768F", fontSize:"2rem"}}/>
             <Box>
               <Typography color={main} fontWeight="500">
                 Saved Items
@@ -166,7 +175,8 @@ const UserWidget = ({ userId, picturePath }) => {
 
         <FlexBetween gap="1rem" mb="2rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/events.png" alt="Events" />
+            {/* <img src="../assets/events.png" alt="Events" /> */}
+            <Event sx={{ color: "#1C768F", fontSize:"2rem"}}/>
             <Box>
               <Typography color={main} fontWeight="500">
                 Events
@@ -177,10 +187,24 @@ const UserWidget = ({ userId, picturePath }) => {
 
         <FlexBetween gap="1rem" mb="2rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/groups.png" alt="Groups" />
+            {/* <img src="../assets/groups.png" alt="Groups" /> */}
+            <Groups2 sx={{ color: "#1C768F", fontSize:"2rem"}}/>
             <Box>
               <Typography color={main} fontWeight="500">
                 Groups
+              </Typography>
+            </Box>
+          </FlexBetween>
+        </FlexBetween>
+
+        {/* GPA Calculator Starts from here */}
+        <FlexBetween gap="1rem" mb="2rem">
+          <FlexBetween gap="1rem">
+            {/* <img src="../assets/calc.png" alt="Groups" width="25px" height="25px" /> */}
+            <Calculate sx={{ color: "#1C768F", fontSize:"2rem"}}/>
+            <Box>
+              <Typography color={main} fontWeight="500">
+                GPA Calculator
               </Typography>
             </Box>
           </FlexBetween>

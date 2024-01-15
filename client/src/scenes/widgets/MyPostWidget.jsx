@@ -1,11 +1,12 @@
 import {
   EditOutlined,
   DeleteOutlined,
-  AttachFileOutlined,
-  GifBoxOutlined,
   ImageOutlined,
   MicOutlined,
   MoreHorizOutlined,
+  EventAvailableOutlined,
+  OndemandVideoOutlined,
+
 } from "@mui/icons-material";
 import {
   Box,
@@ -45,13 +46,19 @@ const MyPostWidget = ({ picturePath }) => {
       formData.append("picture", image);
       formData.append("picturePath", image.name);
     }
-
-    const response = await fetch(`http://localhost:3001/posts`, {
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+    console.log(formData);
+    const response = await fetch(`http://localhost:3001/posts/create`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       body: formData,
     });
     const posts = await response.json();
+    console.log(posts);
     dispatch(setPosts({ posts }));
     setImage(null);
     setPost("");
@@ -134,13 +141,13 @@ const MyPostWidget = ({ picturePath }) => {
         {isNonMobileScreens ? (
           <>
             <FlexBetween gap="0.25rem">
-              <GifBoxOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Clip</Typography>
+              <OndemandVideoOutlined sx={{ color: mediumMain }} />
+              <Typography color={mediumMain}>Video</Typography>
             </FlexBetween>
 
             <FlexBetween gap="0.25rem">
-              <AttachFileOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Attachment</Typography>
+              <EventAvailableOutlined sx={{ color: mediumMain }} />
+              <Typography color={mediumMain}>Event</Typography>
             </FlexBetween>
 
             <FlexBetween gap="0.25rem">

@@ -1,4 +1,5 @@
 import { Box, useMediaQuery } from "@mui/material";
+import EditProfile from "components/EditProfile";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -50,6 +51,7 @@ const ProfilePage = () => {
         >
           <MyPostWidget picturePath={user.picturePath} />
           <Box m="2rem 0" />
+          {/* <EditProfile/> */}
           <PostsWidget userId={userId} isProfile />
         </Box>
       </Box>
