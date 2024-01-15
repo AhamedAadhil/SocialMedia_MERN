@@ -12,8 +12,13 @@ import {
   Input,
   Box,
 } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import { setLogout } from "state";
 
 const EditUserPopup = ({ open, handleClose, user }) => {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.token);
   const [editedUser, setEditedUser] = useState(user);
   const [profilePicture, setProfilePicture] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(
@@ -41,13 +46,94 @@ const EditUserPopup = ({ open, handleClose, user }) => {
     setProfilePicture(file);
   };
 
-  const handleSaveChanges = () => {
-    // Handle saving changes, e.g., make an API request
-    // Close the popup afterward
-    handleClose();
+  const handleSaveChanges = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("id", editedUser._id);
+
+      // Update only the fields that have changed
+      if (editedUser.password) {
+        formData.append("password", editedUser.password);
+      }
+
+      if (editedUser.firstName) {
+        formData.append("firstName", editedUser.firstName);
+      }
+
+      if (editedUser.lastName) {
+        formData.append("lastName", editedUser.lastName);
+      }
+
+      if (editedUser.location) {
+        formData.append("location", editedUser.location);
+      }
+
+      if (editedUser.occupation) {
+        formData.append("occupation", editedUser.occupation);
+      }
+
+      if (profilePicture) {
+        formData.append("picture", profilePicture);
+      }
+
+      const response = await fetch(
+        `http://localhost:3001/users/${editedUser._id}/update-profile`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        console.log("Profile updated successfully");
+        toast.success("Profile Updated!, Please Login Again");
+        handleClose();
+        dispatch(setLogout());
+      } else {
+        const errorData = await response.json();
+        console.error("Error updating profile:", errorData.error);
+        // Handle errors here, display an error message to the user
+        toast.error(errorData);
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error.message);
+      // Handle errors here, display an error message to the user
+      toast.error(error.message);
+    }
   };
 
-  const handleDelete = () => {};
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/users/${editedUser._id}/delete`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        console.log("Profile Deleted successfully");
+        toast.success("Profile Deleted!");
+        handleClose();
+        dispatch(setLogout());
+      } else {
+        const errorData = await response.json();
+        console.error("Error Deleting User:", errorData.error);
+        // Handle errors here, display an error message to the user
+        toast.error(errorData);
+      }
+    } catch (error) {
+      console.error("Error Delete profile:", error.message);
+      // Handle errors here, display an error message to the user
+      toast.error(error.message);
+    }
+  };
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -88,7 +174,7 @@ const EditUserPopup = ({ open, handleClose, user }) => {
 
         <TextField
           label="Last Name"
-          name="LastName"
+          name="lastName"
           value={editedUser.lastName}
           onChange={handleInputChange}
           fullWidth
@@ -96,7 +182,7 @@ const EditUserPopup = ({ open, handleClose, user }) => {
         />
         <TextField
           label="Location"
-          name="Location"
+          name="location"
           value={editedUser.location}
           onChange={handleInputChange}
           fullWidth
@@ -104,7 +190,7 @@ const EditUserPopup = ({ open, handleClose, user }) => {
         />
         <TextField
           label="Occupation"
-          name="Occupation"
+          name="occupation"
           value={editedUser.occupation}
           onChange={handleInputChange}
           fullWidth
@@ -112,8 +198,9 @@ const EditUserPopup = ({ open, handleClose, user }) => {
         />
         <TextField
           label="Password"
-          name="Password"
-          value={""}
+          name="password"
+          placeholder="********" // Use any placeholder text you prefer
+          value={editedUser.password || ""}
           onChange={handleInputChange}
           fullWidth
           sx={{ marginBottom: 2 }}
