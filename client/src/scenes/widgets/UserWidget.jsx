@@ -216,7 +216,14 @@ const UserWidget = ({ userId, picturePath }) => {
             {/* <img src="../assets/groups.png" alt="Groups" /> */}
             <Groups2 sx={{ color: "#1C768F", fontSize:"2rem"}}/>
             <Box>
-              <Typography color={main} fontWeight="500">
+              <Typography color={main} fontWeight="500" onClick={() => navigate("/group")}
+              sx={{
+                    "&:hover": {
+                      color: "#1C768F",
+                      cursor: "pointer",
+                    },
+                  }}>
+                
                 Groups
               </Typography>
             </Box>
