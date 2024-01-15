@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
-  console.log("FROM POSTS", posts);
   const token = useSelector((state) => state.token);
 
   const getPosts = async () => {
@@ -28,8 +27,13 @@ const PostsWidget = ({ userId, isProfile = false }) => {
         );
       }
       const data = await response.json();
-      console.log("FROM ALL DATA", data);
-      dispatch(setPosts({ posts: data }));
+      dispatch(
+        setPosts({
+          posts: data.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          ),
+        })
+      );
     } catch (error) {
       console.error("Error fetching posts:", error.message);
       toast.error(error.message);
@@ -51,7 +55,13 @@ const PostsWidget = ({ userId, isProfile = false }) => {
       }
       const data = await response.json();
       console.log("FROM USER DATA", data);
-      dispatch(setPosts({ posts: data }));
+      dispatch(
+        setPosts({
+          posts: data.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          ),
+        })
+      );
     } catch (error) {
       console.error("Error fetching user posts:", error.message);
       toast.error(error.message);

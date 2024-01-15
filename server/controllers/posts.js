@@ -193,19 +193,25 @@ export const savePost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    // Check if the post has already been saved by the current user
-    const isSaved = post.saves.some((save) => save.userId === userId);
+    const isSaved = post.saves && post.saves.get(userId);
+
     if (isSaved) {
-      post.saves = post.saves.filter((save) => save.userId !== userId);
+      post.saves.delete(userId);
     } else {
-      post.saves.push({ userId });
-      await post.save();
+      // Initialize 'saves' as an empty Map if it's undefined
+      if (!post.saves) {
+        post.saves = new Map();
+      }
+      post.saves.set(userId, true);
     }
 
-    const allPost = await Post.find();
-    res.status(201).json(allPost);
-    // const updatedPost = await Post.findById(id);
-    // res.status(200).json(updatedPost);
+    const updatedPost = await Post.findByIdAndUpdate(
+      id,
+      { saves: post.saves },
+      { new: true }
+    );
+
+    res.status(201).json(updatedPost);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }

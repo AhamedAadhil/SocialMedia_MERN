@@ -3,7 +3,7 @@ import {
   FavoriteBorderOutlined,
   FavoriteOutlined,
   ShareOutlined,
-  PlayArrowOutlined,
+  BookmarkBorderOutlined,
 } from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
@@ -32,7 +32,11 @@ const PostWidget = ({
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
+  console.log("ISLIKED", isLiked);
+  const isSaved = saves ? Boolean(saves[loggedInUserId]) : false;
+  // console.log("ISSAVED", isSaved);
   const likeCount = Object.keys(likes).length;
+  const saveCount = saves ? Object.keys(saves).length : 0;
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
@@ -51,8 +55,21 @@ const PostWidget = ({
     dispatch(setPost({ post: updatedPost }));
   };
 
-  console.log("VIDEO PATH=======", videoPath);
-  console.log("PICTURE PATH=======", picturePath);
+  const patchSave = async () => {
+    const response = await fetch(
+      `http://localhost:3001/posts/${postId}/saved`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: loggedInUserId }),
+      }
+    );
+    const updatedPost = await response.json();
+    dispatch(setPost({ post: updatedPost }));
+  };
 
   return (
     <WidgetWrapper m="2rem 0">
@@ -113,6 +130,17 @@ const PostWidget = ({
               <ChatBubbleOutlineOutlined />
             </IconButton>
             <Typography>{comments.length}</Typography>
+          </FlexBetween>
+
+          <FlexBetween gap="0.3rem">
+            <IconButton onClick={patchSave}>
+              {isSaved ? (
+                <BookmarkBorderOutlined sx={{ color: primary }} />
+              ) : (
+                <BookmarkBorderOutlined />
+              )}
+            </IconButton>
+            <Typography>{saveCount}</Typography>
           </FlexBetween>
         </FlexBetween>
 
