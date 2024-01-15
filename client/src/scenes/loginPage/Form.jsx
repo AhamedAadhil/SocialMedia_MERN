@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
+import EditProfile from "components/EditProfile";
 import toast from "react-hot-toast";
 
 const registerSchema = yup.object().shape({
@@ -211,7 +212,7 @@ const Form = () => {
                       Boolean(touched.firstName) && Boolean(errors.firstName)
                     }
                     helperText={touched.firstName && errors.firstName}
-                    sx={{ gridColumn: "span 2" }}
+                    sx={{ gridColumn: "span 2"}}
                   />
                   <TextField
                     label="Last Name"

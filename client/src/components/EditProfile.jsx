@@ -229,3 +229,4 @@ const EditUserPopup = ({ open, handleClose, user }) => {
 };
 
 export default EditUserPopup;
+

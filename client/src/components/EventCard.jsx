@@ -1,5 +1,7 @@
 import { Typography, useTheme, Divider } from "@mui/material";
+import { DateRangeOutlined,AccessTimeOutlined,LocationOnOutlined, } from "@mui/icons-material";
 import FlexBetween from "components/FlexBetween";
+import FlexBetween2 from "components/FlexBetween2";
 import WidgetWrapper from "components/WidgetWrapper";
 
 const AdvertWidget = () => {
@@ -18,16 +20,18 @@ const AdvertWidget = () => {
         style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
       /> */}
       <FlexBetween>
-        <Typography color={main} fontWeight="500">
-          UNIVOTEC Career Fare 2024
-        </Typography>
+        <Typography color={main} fontWeight="500">UNIVOTEC Career Fare 2024</Typography>
       </FlexBetween>
 
       {/* Starting Date and Time of Event */}
-      <FlexBetween>
-        <Typography color={medium}>18/02/2024</Typography>
-        <Typography color={medium}>18:30</Typography>
-      </FlexBetween>
+      <FlexBetween2>
+      <DateRangeOutlined sx={{ color: 'primary', fontSize: '1rem' }} /> 
+      <Typography color={medium}>18/02/2024  | 18:30</Typography> 
+      </FlexBetween2 >
+      <FlexBetween2>
+      <LocationOnOutlined sx={{ color: 'primary', fontSize: '1rem' }}/>
+      <Typography color={medium}>Main Auditorium</Typography>
+      </FlexBetween2>
 
       <Typography color={medium} m="0.5rem 0">
         Your pathway to stunning and immaculate beauty and made sure your skin
@@ -35,6 +39,7 @@ const AdvertWidget = () => {
       </Typography>
       <Divider />
     </WidgetWrapper>
+
   );
 };
 
