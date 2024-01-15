@@ -10,22 +10,33 @@ import {
   Groups2,
   Calculate,
 } from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme} from "@mui/material";
+import { Box, Typography, Divider, useTheme } from "@mui/material";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
+import EditUserPopup from "components/EditProfile";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const UserWidget = ({ userId, picturePath }) => {
   const [user, setUser] = useState(null);
+  const userIdFromRedux = useSelector((state) => state.user._id);
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const { palette } = useTheme();
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
   const dark = palette.neutral.dark;
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
+
+  const handleEditButtonClick = () => {
+    setIsEditPopupOpen(true);
+  };
+
+  const handleCloseEditPopup = () => {
+    setIsEditPopupOpen(false);
+  };
 
   const getUser = async () => {
     const response = await fetch(`http://localhost:3001/users/${userId}`, {
@@ -54,6 +65,9 @@ const UserWidget = ({ userId, picturePath }) => {
     friends,
   } = user;
 
+  // Check if the current user is viewing their own profile
+  const isCurrentUser = userId === userIdFromRedux;
+
   return (
     <WidgetWrapper>
       {/* FIRST ROW */}
@@ -81,7 +95,19 @@ const UserWidget = ({ userId, picturePath }) => {
             {/* <Typography color={medium}>{friends.length} friends</Typography> */}
           </Box>
         </FlexBetween>
-        <ManageAccountsOutlined sx={{ color: "#1C768F" }}/>
+        {isCurrentUser && (
+          <ManageAccountsOutlined
+            sx={{ color: "#1C768F" }}
+            onClick={handleEditButtonClick}
+          />
+        )}
+        {isEditPopupOpen && isCurrentUser && (
+          <EditUserPopup
+            open={isEditPopupOpen}
+            handleClose={handleCloseEditPopup}
+            user={user}
+          />
+        )}
       </FlexBetween>
 
       <Divider />
@@ -196,7 +222,6 @@ const UserWidget = ({ userId, picturePath }) => {
             </Box>
           </FlexBetween>
         </FlexBetween>
-
         {/* GPA Calculator Starts from here */}
         <FlexBetween gap="1rem" mb="2rem">
           <FlexBetween gap="1rem">

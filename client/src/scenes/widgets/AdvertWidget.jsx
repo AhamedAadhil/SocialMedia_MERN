@@ -2,6 +2,7 @@ import { Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import EventCard from "components/EventCard";
 import WidgetWrapper from "components/WidgetWrapper";
+import EventCard from "components/EventCard";
 
 const AdvertWidget = () => {
   const { palette } = useTheme();

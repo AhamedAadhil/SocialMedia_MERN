@@ -3,6 +3,7 @@ import {
   FavoriteBorderOutlined,
   FavoriteOutlined,
   ShareOutlined,
+  PlayArrowOutlined,
 } from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
@@ -19,6 +20,7 @@ const PostWidget = ({
   description,
   location,
   picturePath,
+  videoPath,
   userPicturePath,
   likes,
   comments,
@@ -49,6 +51,9 @@ const PostWidget = ({
     dispatch(setPost({ post: updatedPost }));
   };
 
+  console.log("VIDEO PATH=======", videoPath);
+  console.log("PICTURE PATH=======", picturePath);
+
   return (
     <WidgetWrapper m="2rem 0">
       <Friend
@@ -68,6 +73,27 @@ const PostWidget = ({
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
           src={`http://localhost:3001/public/assets/picture/${picturePath}`}
         />
+      )}
+      {videoPath && (
+        <video
+          loop
+          autoPlay
+          muted
+          width="100%"
+          alt="video post"
+          controls // Add controls for video playback
+          style={{
+            borderRadius: "0.75rem",
+            marginTop: "0.75rem",
+            maxHeight: "500px",
+          }}
+        >
+          <source
+            src={`http://localhost:3001/public/assets/videos/${videoPath}`}
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
       )}
       <FlexBetween mt="0.25rem">
         <FlexBetween gap="1rem">
