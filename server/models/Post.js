@@ -40,11 +40,10 @@ const postSchema = mongoose.Schema(
         userId: String,
       },
     ],
-    saves: [
-      {
-        userId: String,
-      },
-    ],
+    saves: {
+      type: Map,
+      of: Boolean,
+    },
   },
   { timestamps: true }
 );

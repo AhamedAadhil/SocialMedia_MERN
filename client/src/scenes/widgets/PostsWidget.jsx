@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
-  console.log("FROM POSTS", posts);
   const token = useSelector((state) => state.token);
 
   const getPosts = async () => {
@@ -28,7 +27,6 @@ const PostsWidget = ({ userId, isProfile = false }) => {
         );
       }
       const data = await response.json();
-      console.log("FROM ALL DATA", data);
       dispatch(
         setPosts({
           posts: data.sort(
