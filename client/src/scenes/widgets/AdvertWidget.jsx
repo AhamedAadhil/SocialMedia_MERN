@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import Close from '@mui/icons-material/Close';
 
-const CreateGroupForm = ({ isOpen, onClose }) => {
+const CreateEventForm = ({ isOpen, onClose }) => {
   // State to manage form inputs
   const [eventData, setEventData] = useState({
     eventName: '',
@@ -24,7 +24,7 @@ const CreateGroupForm = ({ isOpen, onClose }) => {
   });
 
   // Function to handle form submission
-  const handleCreateGroup = () => {
+  const handleCreateEvent = () => {
     // Add your logic to handle group creation here
     console.log('Creating group with data:', eventData);
     // Reset form data if needed
@@ -105,7 +105,7 @@ const CreateGroupForm = ({ isOpen, onClose }) => {
         />
         {/* Add more fields as needed */}
         <Box mt={2}>
-          <Button variant="contained" color="primary" onClick={handleCreateGroup}>
+          <Button variant="contained" color="primary" onClick={handleCreateEvent}>
             Post Event
           </Button>
         </Box>
@@ -115,14 +115,14 @@ const CreateGroupForm = ({ isOpen, onClose }) => {
 };
 
 const AdvertWidget = () => {
-  const [isCreateGroupModalOpen, setCreateGroupModalOpen] = useState(false);
+  const [isCreateEventModalOpen, setCreateEventModalOpen] = useState(false);
 
-  const handleOpenCreateGroupModal = () => {
-    setCreateGroupModalOpen(true);
+  const handleOpenCreateEventModal = () => {
+    setCreateEventModalOpen(true);
   };
 
-  const handleCloseCreateGroupModal = () => {
-    setCreateGroupModalOpen(false);
+  const handleCloseCreateEventModal = () => {
+    setCreateEventModalOpen(false);
   };
 
   return (
@@ -131,7 +131,7 @@ const AdvertWidget = () => {
         <Typography color="#FA991C" variant="h4" fontWeight="500">
           Upcoming Events
         </Typography>
-        <Typography color="primary" onClick={handleOpenCreateGroupModal}>
+        <Typography color="primary" onClick={handleOpenCreateEventModal}>
           Post Event
         </Typography>
       </FlexBetween>
@@ -140,9 +140,9 @@ const AdvertWidget = () => {
       <EventCard />
 
       {/* Create Group Modal */}
-      <CreateGroupForm
-        isOpen={isCreateGroupModalOpen}
-        onClose={handleCloseCreateGroupModal}
+      <CreateEventForm
+        isOpen={isCreateEventModalOpen}
+        onClose={handleCloseCreateEventModal}
       />
     </WidgetWrapper>
   );
