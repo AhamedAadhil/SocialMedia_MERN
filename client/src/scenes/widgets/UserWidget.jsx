@@ -2,6 +2,7 @@ import {
   ManageAccountsOutlined,
   EditOutlined,
   LocationOnOutlined,
+  AddCircle,
   WorkOutlineOutlined,
   Bookmark,
   LinkedIn,
@@ -10,7 +11,7 @@ import {
   Groups2,
   Calculate,
 } from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme } from "@mui/material";
+import { Box, Typography, Divider, useTheme,InputBase,Select,FormControl,MenuItem } from "@mui/material";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -18,6 +19,7 @@ import EditUserPopup from "components/EditProfile";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import GroupCreationComponent from "components/GroupForm";
 
 const UserWidget = ({ userId, picturePath }) => {
   const [user, setUser] = useState(null);
@@ -227,6 +229,7 @@ const UserWidget = ({ userId, picturePath }) => {
                 Groups
               </Typography>
             </Box>
+            <GroupCreationComponent/>
           </FlexBetween>
         </FlexBetween>
         {/* GPA Calculator Starts from here */}
