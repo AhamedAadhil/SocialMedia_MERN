@@ -6,7 +6,6 @@ import {
   MoreHorizOutlined,
   EventAvailableOutlined,
   OndemandVideoOutlined,
-
 } from "@mui/icons-material";
 import {
   Box,
@@ -59,8 +58,14 @@ const MyPostWidget = ({ picturePath }) => {
       },
       body: formData,
     });
-    const posts = await response.json();
-    dispatch(setPosts({ posts }));
+    const data = await response.json();
+    dispatch(
+      setPosts({
+        posts: data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        ),
+      })
+    );
     setImage(null);
     setVideo(null);
     setPost("");
