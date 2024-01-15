@@ -34,7 +34,6 @@ const PostWidget = ({
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
-  console.log("ISLIKED", isLiked);
   const isSaved = saves ? Boolean(saves[loggedInUserId]) : false;
   // console.log("ISSAVED", isSaved);
   const likeCount = Object.keys(likes).length;

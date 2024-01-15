@@ -7,6 +7,7 @@ import {
   createEvent,
   sharePost,
   savePost,
+  getEvents,
 } from "../controllers/posts.js";
 import { verifyToken } from "../middleware/auth.js";
 
@@ -15,6 +16,7 @@ const router = express.Router();
 /* READ */
 router.get("/", verifyToken, getFeedPosts);
 router.get("/:userId/posts", verifyToken, getUserPosts);
+router.get("/get-events", verifyToken, getEvents);
 
 /* WRITE */
 router.post("/:id/shared", verifyToken, sharePost);
