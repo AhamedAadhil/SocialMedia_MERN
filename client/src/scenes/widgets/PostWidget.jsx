@@ -58,6 +58,7 @@ const PostWidget = ({
   const isReposted = Boolean(repostedBy);
   // Check if the logged-in user is the owner of the post
   const isOwner = loggedInUserId === postUserId;
+  const originalPostUserId = isReposted ? repostedBy : postUserId;
 
   const patchLike = async () => {
     const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
@@ -192,7 +193,7 @@ const PostWidget = ({
     <WidgetWrapper m="2rem 0">
       <FlexBetween>
         <Friend
-          friendId={isReposted ? repostedBy : postUserId}
+          friendId={originalPostUserId}
           name={name}
           subtitle={location}
           userPicturePath={userPicturePath}

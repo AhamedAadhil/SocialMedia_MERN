@@ -75,6 +75,10 @@ const EditUserPopup = ({ open, handleClose, user }) => {
       if (profilePicture) {
         formData.append("picture", profilePicture);
       }
+      // Log the content of the FormData to the console
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
 
       const response = await fetch(
         `http://localhost:3001/users/${editedUser._id}/update-profile`,
@@ -229,4 +233,3 @@ const EditUserPopup = ({ open, handleClose, user }) => {
 };
 
 export default EditUserPopup;
-

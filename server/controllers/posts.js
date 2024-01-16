@@ -1,8 +1,9 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 import Events from "../models/Event.js";
+import Group from "../models/Group.js";
 
-/* CREATE */
+/* CREATE POST*/
 export const createPost = async (req, res) => {
   try {
     const { userId, description, picturePath, videoPath } = req.body;
@@ -248,5 +249,73 @@ export const savePost = async (req, res) => {
     res.status(201).json(updatedPost);
   } catch (err) {
     res.status(404).json({ message: err.message });
+  }
+};
+
+/* CREATE GROUP */
+export const createGroup = async (req, res) => {
+  try {
+    const { creatorId, groupName, groupDescription, groupMembers } = req.body;
+
+    const newGroup = new Group({
+      creatorId,
+      groupName,
+      groupDescription,
+      groupMembers,
+    });
+    // Handle profile picture upload (if available)
+    if (req.files && req.files.picture) {
+      const profilePicture = req.files.picture[0];
+      newGroup.profilePicture = profilePicture.filename;
+    }
+
+    // Save the new group to the database
+    const savedGroup = await newGroup.save();
+    //all groups
+    const allGroups = await Group.find();
+
+    res
+      .status(201)
+      .json({
+        group: savedGroup,
+        allGroups,
+        message: "Group created successfully",
+      });
+  } catch (error) {
+    console.error("Error creating group:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+/* GET GROUPS */
+export const getGroups = async (req, res) => {
+  try {
+    const groups = await Group.find();
+    res.status(200).json(groups);
+  } catch (error) {
+    console.error("Error getting groups:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+/* GET GRUP BY ID */
+export const getGroupById = async (req, res) => {
+  try {
+    // Extract the group ID from the request parameters
+    const groupId = req.params.groupId;
+
+    // Find the group by ID
+    const group = await Group.findById(groupId);
+
+    // Check if the group was found
+    if (!group) {
+      return res.status(404).json({ error: "Group not found" });
+    }
+
+    // Return the group details
+    res.status(200).json(group);
+  } catch (error) {
+    console.error("Error getting group by ID:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

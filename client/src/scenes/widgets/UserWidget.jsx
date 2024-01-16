@@ -9,6 +9,7 @@ import {
   Event,
   Groups2,
   Calculate,
+  ControlPointOutlined,
 } from "@mui/icons-material";
 import { Box, Typography, Divider, useTheme } from "@mui/material";
 import UserImage from "components/UserImage";
@@ -18,12 +19,13 @@ import EditUserPopup from "components/EditProfile";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import GroupCreationComponent from "components/GroupForm";
+import CreateGroupForm from "components/GroupForm";
 
 const UserWidget = ({ userId, picturePath }) => {
   const [user, setUser] = useState(null);
   const userIdFromRedux = useSelector((state) => state.user._id);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [isCreateGroupFormOpen, setIsCreateGroupFormOpen] = useState(false);
   const { palette } = useTheme();
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
@@ -154,7 +156,7 @@ const UserWidget = ({ userId, picturePath }) => {
         <FlexBetween gap="1rem" mb="0.5rem">
           <FlexBetween gap="1rem">
             {/* <img src="../assets/twitter.png" alt="twitter"/> */}
-            <Twitter sx={{ color: "#1C768F", fontSize:"2rem"}}/>
+            <Twitter sx={{ color: "#1C768F", fontSize: "2rem" }} />
             <Box>
               <Typography color={main} fontWeight="500">
                 Twitter
@@ -168,7 +170,7 @@ const UserWidget = ({ userId, picturePath }) => {
         <FlexBetween gap="1rem">
           <FlexBetween gap="1rem">
             {/* <img src="../assets/linkedin.png" alt="linkedin" /> */}
-            <LinkedIn sx={{ color: "#1C768F", fontSize:"2rem"}}/>
+            <LinkedIn sx={{ color: "#1C768F", fontSize: "2rem" }} />
             <Box>
               <Typography color={main} fontWeight="500">
                 Linkedin
@@ -191,15 +193,19 @@ const UserWidget = ({ userId, picturePath }) => {
         <FlexBetween gap="1rem" mb="2rem">
           <FlexBetween gap="1rem">
             {/* <img src="../assets/saved.png" alt="saved" /> */}
-            <Bookmark sx={{ color: "#1C768F", fontSize:"2rem"}}/>
+            <Bookmark sx={{ color: "#1C768F", fontSize: "2rem" }} />
             <Box>
-              <Typography color={main} fontWeight="500" onClick={() => navigate("/saved")}
-              sx={{
-                "&:hover": {
-                  color: "#1C768F",
-                  cursor: "pointer",
-                },
-              }}>
+              <Typography
+                color={main}
+                fontWeight="500"
+                onClick={() => navigate("/saved")}
+                sx={{
+                  "&:hover": {
+                    color: "#1C768F",
+                    cursor: "pointer",
+                  },
+                }}
+              >
                 Saved Items
               </Typography>
             </Box>
@@ -209,15 +215,19 @@ const UserWidget = ({ userId, picturePath }) => {
         <FlexBetween gap="1rem" mb="2rem">
           <FlexBetween gap="1rem">
             {/* <img src="../assets/events.png" alt="Events" /> */}
-            <Event sx={{ color: "#1C768F", fontSize:"2rem"}}/>
+            <Event sx={{ color: "#1C768F", fontSize: "2rem" }} />
             <Box>
-              <Typography color={main} fontWeight="500"onClick={() => navigate("")}
-              sx={{
-                "&:hover": {
-                  color: "#1C768F",
-                  cursor: "pointer",
-                },
-              }}>
+              <Typography
+                color={main}
+                fontWeight="500"
+                onClick={() => navigate("")}
+                sx={{
+                  "&:hover": {
+                    color: "#1C768F",
+                    cursor: "pointer",
+                  },
+                }}
+              >
                 Events
               </Typography>
             </Box>
@@ -227,27 +237,39 @@ const UserWidget = ({ userId, picturePath }) => {
         <FlexBetween gap="1rem" mb="2rem">
           <FlexBetween gap="1rem">
             {/* <img src="../assets/groups.png" alt="Groups" /> */}
-            <Groups2 sx={{ color: "#1C768F", fontSize:"2rem"}}/>
+            <Groups2 sx={{ color: "#1C768F", fontSize: "2rem" }} />
             <Box>
-              <Typography color={main} fontWeight="500" onClick={() => navigate("/group")}
-              sx={{
-                    "&:hover": {
-                      color: "#1C768F",
-                      cursor: "pointer",
-                    },
-                  }}>
-                
+              <Typography
+                color={main}
+                fontWeight="500"
+                onClick={() => navigate("/group")}
+                sx={{
+                  "&:hover": {
+                    color: "#1C768F",
+                    cursor: "pointer",
+                  },
+                }}
+              >
                 Groups
               </Typography>
             </Box>
-            <GroupCreationComponent/>
+            {/* <CreateGroupForm /> */}
+            <ControlPointOutlined
+              onClick={() => setIsCreateGroupFormOpen(true)}
+            />
+            {isCreateGroupFormOpen && (
+              <CreateGroupForm
+                isOpen={isCreateGroupFormOpen}
+                onClose={() => setIsCreateGroupFormOpen(false)}
+              />
+            )}
           </FlexBetween>
         </FlexBetween>
         {/* GPA Calculator Starts from here */}
         <FlexBetween gap="1rem" mb="2rem">
           <FlexBetween gap="1rem">
             {/* <img src="../assets/calc.png" alt="Groups" width="25px" height="25px" /> */}
-            <Calculate sx={{ color: "#1C768F", fontSize:"2rem"}}/>
+            <Calculate sx={{ color: "#1C768F", fontSize: "2rem" }} />
             <Box>
               <Typography color={main} fontWeight="500">
                 GPA Calculator

@@ -12,7 +12,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setLogin } from "state";
+import { setLogin, setAllUsers, setGroups } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
 import toast from "react-hot-toast";
@@ -98,6 +98,11 @@ const Form = () => {
         body: JSON.stringify(values),
       });
 
+      const fetchAllUsers = await fetch("http://localhost:3001/users/getAll", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
       if (!loggedInResponse.ok) {
         // Handle non-2xx HTTP status codes (e.g., 4xx, 5xx)
         const errorData = await loggedInResponse.json();
@@ -105,8 +110,19 @@ const Form = () => {
         return;
       }
 
+      if (!fetchAllUsers.ok) {
+        const errorData = await loggedInResponse.json();
+        toast.error("Error fetching all users", errorData);
+        return;
+      }
+
       const loggedIn = await loggedInResponse.json();
       toast.success("Logged In!");
+
+      const allUsers = await fetchAllUsers.json();
+      console.log("All users", allUsers);
+      dispatch(setAllUsers({ allUsers }));
+
       onSubmitProps.resetForm();
 
       if (loggedIn) {
@@ -130,48 +146,45 @@ const Form = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center"
-    >
+    <Box display="flex" justifyContent="center" alignItems="center">
       {/* Left Section with Logo and Text */}
       {isRegister ? (
         <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="left"
-        pr={6} // Adjust the padding as needed
-        
-      >
-        {/* <img src="/path/to/logo.png" alt="Logo" width="100" height="100" /> */}
-        <Typography variant="h1" color="#FA991C" fontWeight="700">
-          UniConnect
-        </Typography>
-        <Typography variant="h5">
-          UniConnect helps to unlock <br />
-          new knowledge and build connections.
-        </Typography>
-        {/* Add any additional text or components here */}
-      </Box>
-      ):(
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="left"
+          pr={6} // Adjust the padding as needed
+        >
+          {/* <img src="/path/to/logo.png" alt="Logo" width="100" height="100" /> */}
+          <Typography variant="h1" color="#FA991C" fontWeight="700">
+            UniConnect
+          </Typography>
+          <Typography variant="h5">
+            UniConnect helps to unlock <br />
+            new knowledge and build connections.
+          </Typography>
+          {/* Add any additional text or components here */}
+        </Box>
+      ) : (
         <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="left"
-        pr={6} // Adjust the padding as needed
-      >
-        {/* <img src="/path/to/logo.png" alt="Logo" width="100" height="100" /> */}
-        <Typography variant="h1" color="#FA991C" fontWeight="700">
-          UniConnect
-        </Typography>
-        <Typography variant="h5">
-          UniConnect helps to unlock <br />
-          new knowledge and build connections.
-        </Typography>
-        {/* Add any additional text or components here */}
-      </Box>
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="left"
+          pr={6} // Adjust the padding as needed
+        >
+          {/* <img src="/path/to/logo.png" alt="Logo" width="100" height="100" /> */}
+          <Typography variant="h1" color="#FA991C" fontWeight="700">
+            UniConnect
+          </Typography>
+          <Typography variant="h5">
+            UniConnect helps to unlock <br />
+            new knowledge and build connections.
+          </Typography>
+          {/* Add any additional text or components here */}
+        </Box>
       )}
-     
 
       {/* Right Section with Form */}
       <Formik
@@ -190,8 +203,6 @@ const Form = () => {
           resetForm,
         }) => (
           <form onSubmit={handleSubmit}>
-
-            
             <div style={{ textAlign: "center", marginBottom: "40px" }}>
               <img
                 src="../assets/logo.png"
@@ -236,7 +247,7 @@ const Form = () => {
                       Boolean(touched.firstName) && Boolean(errors.firstName)
                     }
                     helperText={touched.firstName && errors.firstName}
-                    sx={{ gridColumn: "span 2"}}
+                    sx={{ gridColumn: "span 2" }}
                   />
                   <TextField
                     label="Last Name"

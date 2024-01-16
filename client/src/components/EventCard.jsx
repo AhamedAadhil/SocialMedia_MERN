@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import React, { useCallback, useState } from "react";
 import { useEffect } from "react";
-import { setEvent } from "state";
+import { setEvent, setGroups } from "state";
 
 const AdvertWidget = () => {
   const { palette } = useTheme();
@@ -22,6 +22,23 @@ const AdvertWidget = () => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const events = useSelector((state) => state.events);
+
+  const handleGroups = async () => {
+    const fetchAllGroups = await fetch("http://localhost:3001/groups/getAll", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!fetchAllGroups.ok) {
+      const errorData = await fetchAllGroups.json();
+      toast.error("Error fetching all groups", errorData);
+      return;
+    }
+
+    const allGroups = await fetchAllGroups.json();
+    // dispatch(setGroups({ allGroups }));
+    dispatch(setGroups({ groups: allGroups }));
+  };
 
   const handleEvents = useCallback(async () => {
     try {
@@ -52,6 +69,7 @@ const AdvertWidget = () => {
 
   useEffect(() => {
     handleEvents();
+    handleGroups();
   }, [handleEvents]);
 
   return (

@@ -11,10 +11,12 @@ import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
+import groupRoutes from "./routes/group.js";
 import { register } from "./controllers/auth.js";
 import { createPost } from "./controllers/posts.js";
 import { updateProfile } from "./controllers/users.js";
 import { verifyToken } from "./middleware/auth.js";
+import { createGroup } from "./controllers/posts.js";
 import User from "./models/User.js";
 import Post from "./models/Post.js";
 import { users, posts } from "./data/index.js";
@@ -28,9 +30,9 @@ app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
-app.use(bodyParser.json({ limit: "30mb", extended: true }));
-app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+app.use(bodyParser.json({ limit: "150mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "150mb", extended: true }));
+app.use(cors({ origin: "http://localhost:3000" }));
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 // /* FILE STORAGE FOR IMAGES */
@@ -54,6 +56,9 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 // });
 
 const upload = multer({
+  limits: {
+    fileSize: 30 * 1024 * 1024, // 30 MB limit for files
+  },
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
       if (file.fieldname === "picture") {
@@ -93,11 +98,13 @@ const upload = multer({
 app.post("/auth/register", upload, register);
 app.post("/posts/create", verifyToken, upload, createPost);
 app.put("/users/:id/update-profile", verifyToken, upload, updateProfile);
+app.post("/group/create", verifyToken, upload, createGroup);
 
 /* ROUTES */
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+app.use("/groups", groupRoutes);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 6001;

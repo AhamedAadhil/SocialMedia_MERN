@@ -6,6 +6,8 @@ const initialState = {
   token: null,
   posts: [],
   events: [],
+  allUsers: [],
+  groups: [],
 };
 
 export const authSlice = createSlice({
@@ -59,6 +61,12 @@ export const authSlice = createSlice({
     setEvent: (state, action) => {
       state.events = action.payload.events;
     },
+    setAllUsers: (state, action) => {
+      state.allUsers = action.payload.allUsers;
+    },
+    setGroups: (state, action) => {
+      state.groups = action.payload.groups;
+    },
   },
 });
 
@@ -70,5 +78,7 @@ export const {
   setPosts,
   setPost,
   setEvent,
+  setAllUsers,
+  setGroups,
 } = authSlice.actions;
 export default authSlice.reducer;

@@ -2,6 +2,11 @@ import jwt from "jsonwebtoken";
 
 export const verifyToken = async (req, res, next) => {
   try {
+    // Skip token verification for the getAllUsers route
+    if (req.path === "/users/getAll" && req.method === "GET") {
+      return next();
+    }
+
     let token = req.header("Authorization");
 
     if (!token) {

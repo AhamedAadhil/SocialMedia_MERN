@@ -11,6 +11,7 @@ const FriendListWidget = ({ userId }) => {
   const { palette } = useTheme();
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
+  const allGroups = useSelector((state) => state.groups);
 
   const getFriends = async () => {
     const response = await fetch(
@@ -49,9 +50,11 @@ const FriendListWidget = ({ userId }) => {
           />
         ))}
       </Box>
-      <GroupSingle />
-      <GroupSingle />
-      <GroupSingle />
+      <Box>
+        {allGroups.map((group) => (
+          <GroupSingle key={group._id} groupId={group._id} />
+        ))}
+      </Box>
     </WidgetWrapper>
   );
 };
