@@ -8,6 +8,7 @@ import {
   sharePost,
   savePost,
   getEvents,
+  deletePost,
 } from "../controllers/posts.js";
 import { verifyToken } from "../middleware/auth.js";
 
@@ -26,5 +27,8 @@ router.post("/event", verifyToken, createEvent);
 router.patch("/:id/like", verifyToken, likePost);
 router.patch("/:id/comment", verifyToken, addComment);
 router.patch("/:id/saved", verifyToken, savePost);
+
+/* DELETE */
+router.delete("/:id/delete", verifyToken, deletePost);
 
 export default router;

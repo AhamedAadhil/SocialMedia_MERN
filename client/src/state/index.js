@@ -33,12 +33,28 @@ export const authSlice = createSlice({
     setPosts: (state, action) => {
       state.posts = action.payload.posts;
     },
+    // setPost: (state, action) => {
+    //   const updatedPosts = state.posts.map((post) => {
+    //     if (post._id === action.payload.post._id) return action.payload.post;
+    //     return post;
+    //   });
+    //   state.posts = updatedPosts;
+    // },
     setPost: (state, action) => {
-      const updatedPosts = state.posts.map((post) => {
-        if (post._id === action.payload.post._id) return action.payload.post;
-        return post;
-      });
-      state.posts = updatedPosts;
+      if (action.payload.post) {
+        // Update the existing post
+        const updatedPosts = state.posts.map((post) => {
+          if (post._id === action.payload.post._id) return action.payload.post;
+          return post;
+        });
+        state.posts = updatedPosts;
+      } else {
+        // Remove the deleted post
+        const updatedPosts = state.posts.filter(
+          (post) => post._id !== action.payload.deletedPostId
+        );
+        state.posts = updatedPosts;
+      }
     },
     setEvent: (state, action) => {
       state.events = action.payload.events;

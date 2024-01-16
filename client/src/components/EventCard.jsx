@@ -37,7 +37,6 @@ const AdvertWidget = () => {
         return;
       }
       const eventsData = await getEvents.json();
-      console.log("EVENTS======", events);
       dispatch(
         setEvent({
           events: eventsData.sort(
@@ -45,7 +44,6 @@ const AdvertWidget = () => {
           ),
         })
       );
-      console.log(events);
     } catch (error) {
       console.error("Error fetching events:", error);
       toast.error(error.message);

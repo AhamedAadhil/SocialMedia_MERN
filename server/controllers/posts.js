@@ -80,6 +80,29 @@ export const likePost = async (req, res) => {
   }
 };
 
+/* DELETE POST */
+export const deletePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    if (userId !== post.userId) {
+      return res.status(401).json({ message: "Access Denied!" });
+    }
+    const deletePost = await Post.findByIdAndDelete(post);
+    if (!deletePost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    res.status(200).json(deletePost);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 /* ADD COMMENTS */
 export const addComment = async (req, res) => {
   try {

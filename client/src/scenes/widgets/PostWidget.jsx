@@ -6,6 +6,7 @@ import {
   BookmarkBorderOutlined,
   Send,
   DeleteForeverOutlined,
+  RestartAltOutlined,
 } from "@mui/icons-material";
 import {
   Box,
@@ -20,7 +21,7 @@ import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "state";
+import { setPost, setPosts } from "state";
 import toast from "react-hot-toast";
 
 const PostWidget = ({
@@ -43,15 +44,20 @@ const PostWidget = ({
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
   const user = useSelector((state) => state.user);
+  const posts = useSelector((state) => state.posts);
   const isLiked = Boolean(likes[loggedInUserId]);
   const isSaved = saves ? Boolean(saves[loggedInUserId]) : false;
-  // console.log("ISSAVED", isSaved);
   const likeCount = Object.keys(likes).length;
   const saveCount = saves ? Object.keys(saves).length : 0;
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
+
+  const repostedBy = shares.length > 0 ? shares[0].userId : null;
+  const isReposted = Boolean(repostedBy);
+  // Check if the logged-in user is the owner of the post
+  const isOwner = loggedInUserId === postUserId;
 
   const patchLike = async () => {
     const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
@@ -118,25 +124,102 @@ const PostWidget = ({
     }
   };
 
+  const handleRepost = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/posts/${postId}/shared`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: loggedInUserId,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        toast.error(errorData.error);
+        return;
+      }
+
+      const updatedPost = await response.json();
+      dispatch(setPost({ post: updatedPost }));
+
+      toast.success("Post shared successfully!");
+    } catch (error) {
+      console.error("Error sharing post:", error);
+      toast.error(error.message);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/posts/${postId}/delete`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: loggedInUserId }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        toast.error(errorData.message);
+        return;
+      }
+
+      const deletedPost = await response.json();
+      // Remove the deleted post from the state.posts array
+      const updatedPosts = posts.filter((post) => post._id !== deletedPost._id);
+      dispatch(setPosts({ posts: updatedPosts }));
+
+      toast.success("Post deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      toast.error(error.message);
+    }
+  };
+
   return (
     <WidgetWrapper m="2rem 0">
       <FlexBetween>
         <Friend
-          friendId={postUserId}
+          friendId={isReposted ? repostedBy : postUserId}
           name={name}
           subtitle={location}
           userPicturePath={userPicturePath}
         />
-        <DeleteForeverOutlined
-          sx={{
-            fontSize: "2rem",
-            color: "#1C768F",
-            "&:hover": {
-              color: "red",
-              cursor: "pointer",
-            },
-          }}
-        />
+        {isReposted && (
+          <Typography
+            sx={{ color: "#1C768F", display: "flex", alignItems: "center" }}
+          >
+            <RestartAltOutlined
+              sx={{ marginRight: "0.5rem", color: "#1C768F" }}
+            />{" "}
+            Reposted
+          </Typography>
+        )}
+        {isOwner && (
+          <DeleteForeverOutlined
+            sx={{
+              fontSize: "1.5rem",
+              color: "#1C768F",
+              "&:hover": {
+                color: "red",
+                cursor: "pointer",
+              },
+            }}
+            onClick={() => handleDelete()}
+          />
+        )}
       </FlexBetween>
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
@@ -207,9 +290,10 @@ const PostWidget = ({
         </FlexBetween>
 
         <IconButton>
-          <ShareOutlined />
+          <ShareOutlined onClick={() => handleRepost()} />
         </IconButton>
       </FlexBetween>
+
       {isComments && (
         <Box mt="0.5rem">
           <FlexBetween>
