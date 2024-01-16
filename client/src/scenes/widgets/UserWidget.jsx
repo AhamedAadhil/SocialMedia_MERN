@@ -2,7 +2,6 @@ import {
   ManageAccountsOutlined,
   EditOutlined,
   LocationOnOutlined,
-  AddCircle,
   WorkOutlineOutlined,
   Bookmark,
   LinkedIn,
@@ -11,7 +10,7 @@ import {
   Groups2,
   Calculate,
 } from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme,InputBase,Select,FormControl,MenuItem } from "@mui/material";
+import { Box, Typography, Divider, useTheme } from "@mui/material";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -194,7 +193,13 @@ const UserWidget = ({ userId, picturePath }) => {
             {/* <img src="../assets/saved.png" alt="saved" /> */}
             <Bookmark sx={{ color: "#1C768F", fontSize:"2rem"}}/>
             <Box>
-              <Typography color={main} fontWeight="500">
+              <Typography color={main} fontWeight="500" onClick={() => navigate("/saved")}
+              sx={{
+                "&:hover": {
+                  color: "#1C768F",
+                  cursor: "pointer",
+                },
+              }}>
                 Saved Items
               </Typography>
             </Box>
@@ -206,7 +211,13 @@ const UserWidget = ({ userId, picturePath }) => {
             {/* <img src="../assets/events.png" alt="Events" /> */}
             <Event sx={{ color: "#1C768F", fontSize:"2rem"}}/>
             <Box>
-              <Typography color={main} fontWeight="500">
+              <Typography color={main} fontWeight="500"onClick={() => navigate("")}
+              sx={{
+                "&:hover": {
+                  color: "#1C768F",
+                  cursor: "pointer",
+                },
+              }}>
                 Events
               </Typography>
             </Box>

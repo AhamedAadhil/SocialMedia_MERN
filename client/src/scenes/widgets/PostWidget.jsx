@@ -82,7 +82,7 @@ const PostWidget = ({
         subtitle={location}
         userPicturePath={userPicturePath}
       />
-      <DeleteForeverOutlined sx={{fontSize:"2rem" ,color:"#1C768F" , "&:hover": {
+      <DeleteForeverOutlined sx={{fontSize:"1.5rem" ,color:"#1C768F" , "&:hover": {
               color: "red",
               cursor: "pointer",
             }, }}/>

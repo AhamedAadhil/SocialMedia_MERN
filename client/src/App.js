@@ -3,6 +3,7 @@ import HomePage from "scenes/homePage";
 import LoginPage from "scenes/loginPage";
 import ProfilePage from "scenes/profilePage";
 import GroupPage from "scenes/groupPage";
+import SavedPage from "scenes/SavedPage";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -32,6 +33,10 @@ function App() {
             <Route
               path="/group"
               element={isAuth ? <GroupPage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/saved"
+              element={isAuth ? <SavedPage /> : <Navigate to="/" />}
             />
           </Routes>
         </ThemeProvider>

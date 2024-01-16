@@ -61,20 +61,20 @@ const AdvertWidget = () => {
       {events.map((event) => (
         <div key={event._id}>
           <FlexBetween>
-            <Typography color={main} fontWeight="500">
+            <Typography color="#1C768F" fontWeight="500">
               {event.title}
             </Typography>
           </FlexBetween>
 
           {/* Starting Date and Time of Event */}
           <FlexBetween2>
-            <DateRangeOutlined sx={{ color: "primary", fontSize: "1rem" }} />
+            <DateRangeOutlined sx={{ color: "#1C768F", fontSize: "1rem" }} />
             <Typography color={medium}>
               {event.startDate} | {event.time}
             </Typography>
           </FlexBetween2>
           <FlexBetween2>
-            <LocationOnOutlined sx={{ color: "primary", fontSize: "1rem" }} />
+            <LocationOnOutlined sx={{ color: "#1C768F", fontSize: "1rem" }} />
             <Typography color={medium}>{event.venue}</Typography>
           </FlexBetween2>
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Box, TextField, Button, Typography } from '@mui/material';
+import { Modal, Box, TextField, Button, Typography,Avatar, Input } from '@mui/material';
 import { AddCircle } from '@mui/icons-material';
 
 const CreateGroupPopup = ({ isOpen, onClose }) => {
@@ -9,7 +9,11 @@ const CreateGroupPopup = ({ isOpen, onClose }) => {
     groupDescription: '',
     groupMembers: '',
   });
-
+  // const [previewUrl, setPreviewUrl] = useState(
+  //   user.picturePath
+  //     ? `http://localhost:3001/public/assets/picture/download.jpg`
+  //     : null
+  // );
   const handleCreateGroup = () => {
     // Add logic to handle creating a group with the provided data
     console.log('Creating group with data:', groupData);
@@ -42,13 +46,20 @@ const CreateGroupPopup = ({ isOpen, onClose }) => {
         <Typography variant="h6" gutterBottom>
           Create a New Group
         </Typography>
-        <TextField
-          label="Group Profile Picture"
-          fullWidth
-          value={groupData.profilePicture}
-          onChange={(e) => setGroupData({ ...groupData, profilePicture: e.target.value })}
-          margin="normal"
-        />
+        {/* Profile Picture */}
+        <Avatar
+            alt=''
+            src=''
+            sx={{ width: 100, height: 100, marginBottom: 2 }}
+          />
+
+          {/* File Input for Changing Profile Picture */}
+          <Input
+            type="file"
+            accept="image/*"
+            onChange=""
+            sx={{ marginBottom: 2 }}
+          />
         <TextField
           label="Group Name"
           fullWidth
