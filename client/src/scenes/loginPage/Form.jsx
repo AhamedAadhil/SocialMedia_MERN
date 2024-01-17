@@ -157,13 +157,13 @@ const Form = () => {
           pr={6} // Adjust the padding as needed
         >
           {/* <img src="/path/to/logo.png" alt="Logo" width="100" height="100" /> */}
-          <Typography variant="h1" color="#FA991C" fontWeight="700">
+          {/* <Typography variant="h1" color="#FA991C" fontWeight="700">
             UniConnect
           </Typography>
           <Typography variant="h5">
             UniConnect helps to unlock <br />
             new knowledge and build connections.
-          </Typography>
+          </Typography> */}
           {/* Add any additional text or components here */}
         </Box>
       ) : (
