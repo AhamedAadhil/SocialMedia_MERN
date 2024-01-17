@@ -6,7 +6,7 @@ const LoginPage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   return (
     <Box>
-      <Box
+      {/* <Box
         width="100%"
         backgroundColor="#FA991C"
         p="1rem 6%"
@@ -15,7 +15,7 @@ const LoginPage = () => {
         <Typography fontWeight="bold" fontSize="32px" color="#FFFFFF">
           UniConnect
         </Typography>
-      </Box>
+      </Box> */}
 
       <Box
         width={isNonMobileScreens ? "50%" : "93%"}
