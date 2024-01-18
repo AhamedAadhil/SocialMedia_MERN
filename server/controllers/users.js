@@ -20,8 +20,6 @@ export const updateProfile = async (req, res) => {
     const { password, firstName, lastName, occupation, location } = req.body;
 
     const user = await User.findById(id);
-    console.log("Received body====", req.body);
-    console.log("Received files====", req.files);
     if (password) {
       const salt = await bcrypt.genSalt();
       const passwordHash = await bcrypt.hash(password, salt);
@@ -29,9 +27,8 @@ export const updateProfile = async (req, res) => {
     }
 
     if (req.files && req.files.picture) {
-      // Assuming 'picture' is the field name for the profile picture
       const profilePicture = req.files.picture[0];
-      user.picturePath = profilePicture.filename; // Save the filename or path as needed
+      user.picturePath = profilePicture.filename;
     }
 
     if (firstName) {

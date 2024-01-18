@@ -35,29 +35,9 @@ app.use(bodyParser.urlencoded({ limit: "150mb", extended: true }));
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use("/public", express.static(path.join(__dirname, "public")));
 
-// /* FILE STORAGE FOR IMAGES */
-// const imageStorage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "public/assets/picture");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, file.originalname);
-//   },
-// });
-
-// /* FILE STORAGE FOR VIDEOS */
-// const videoStorage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "public/assets/videos");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, file.originalname);
-//   },
-// });
-
 const upload = multer({
   limits: {
-    fileSize: 30 * 1024 * 1024, // 30 MB limit for files
+    fileSize: 30 * 1024 * 1024,
   },
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
@@ -90,9 +70,6 @@ const upload = multer({
   { name: "picture", maxCount: 1 },
   { name: "video", maxCount: 1 },
 ]);
-
-// const imageUpload = multer({ storage: imageStorage }).single("picture");
-// const videoUpload = multer({ storage: videoStorage }).single("video");
 
 /* ROUTES WITH FILES */
 app.post("/auth/register", upload, register);

@@ -71,7 +71,6 @@ export const login = async (req, res) => {
 export const generateOTP = async (req, res) => {
   try {
     const { email } = req.body;
-    console.log("RECEIVED MAIL==", email);
     const otp = `${Math.floor(100000 + Math.random() * 900000)}`;
     await Mail(email, otp);
     res.status(201).json(otp);

@@ -19,7 +19,7 @@ router.get("/:id", verifyToken, getUser);
 // router.patch("/:id/:friendId", verifyToken, addRemoveFriend);
 // router.put("/:id/update-profile", verifyToken, updateProfile);
 
-//DELETE
+/* DELETE */
 router.delete("/:id/delete", verifyToken, deleteProfile);
 
 export default router;
