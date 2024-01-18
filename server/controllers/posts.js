@@ -7,7 +7,6 @@ import Group from "../models/Group.js";
 export const createPost = async (req, res) => {
   try {
     const { userId, description, picturePath, videoPath } = req.body;
-    console.log("Received videoPath", videoPath);
     const user = await User.findById(userId);
     if (!user) {
       // Handle the case when the user is not found
@@ -323,7 +322,6 @@ export const deleteGroupById = async (req, res) => {
   try {
     const { groupId } = req.params;
     const group = await Group.findById(groupId);
-    console.log("GROUPID==", groupId);
 
     if (!group) {
       return res

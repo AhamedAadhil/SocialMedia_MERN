@@ -38,6 +38,10 @@ const UserSchema = new mongoose.Schema(
     phoneNumber: String,
     viewedProfile: Number,
     impressions: Number,
+    otp: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );

@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import { Mail } from "../config/sendMail.js";
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@uovt\.ac\.lk$/;
 /* REGISTER USER */
@@ -15,6 +16,7 @@ export const register = async (req, res) => {
       friends,
       location,
       occupation,
+      otp,
     } = req.body;
 
     // Check if the email matches the required pattern
@@ -36,6 +38,7 @@ export const register = async (req, res) => {
       friends,
       location,
       occupation,
+      otp,
       viewedProfile: Math.floor(Math.random() * 10000),
       impressions: Math.floor(Math.random() * 10000),
     });
@@ -60,6 +63,19 @@ export const login = async (req, res) => {
     delete user.password;
     res.status(200).json({ token, user });
   } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+/* GENERATE OTP */
+export const generateOTP = async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log("RECEIVED MAIL==", email);
+    const otp = `${Math.floor(100000 + Math.random() * 900000)}`;
+    await Mail(email, otp);
+    res.status(201).json(otp);
+  } catch (error) {
     res.status(500).json({ error: err.message });
   }
 };

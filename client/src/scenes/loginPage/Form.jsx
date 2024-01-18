@@ -12,7 +12,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setLogin, setAllUsers, setGroups } from "state";
+import { setLogin, setAllUsers } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
 import toast from "react-hot-toast";
@@ -25,6 +25,10 @@ const registerSchema = yup.object().shape({
   location: yup.string().required("required"),
   occupation: yup.string().required("required"),
   picture: yup.string().required("required"),
+  otp: yup
+    .string()
+    .required("required")
+    .matches(/^\d{6}$/, "Invalid OTP"),
 });
 
 const loginSchema = yup.object().shape({
@@ -40,6 +44,7 @@ const initialValuesRegister = {
   location: "",
   occupation: "",
   picture: "",
+  otp: "",
 };
 
 const initialValuesLogin = {
@@ -49,6 +54,8 @@ const initialValuesLogin = {
 
 const Form = () => {
   const [pageType, setPageType] = useState("login");
+  const [disableRegister, setDisableRegister] = useState(true);
+  const [sentOTP, setSentOTP] = useState(null);
   const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -79,7 +86,6 @@ const Form = () => {
       }
       const savedUser = await savedUserResponse.json();
       toast.success("User Registered!");
-      console.log(savedUser);
       onSubmitProps.resetForm();
 
       if (savedUser) {
@@ -120,7 +126,6 @@ const Form = () => {
       toast.success("Logged In!");
 
       const allUsers = await fetchAllUsers.json();
-      console.log("All users", allUsers);
       dispatch(setAllUsers({ allUsers }));
 
       onSubmitProps.resetForm();
@@ -138,6 +143,54 @@ const Form = () => {
       // Handle network errors or exceptions
       toast.error(error.message);
     }
+  };
+
+  const sendCode = async (email) => {
+    const isEmailEmpty = (email) => {
+      return email.trim() === "";
+    };
+    try {
+      if (isEmailEmpty(email)) {
+        // Handle the case where the email is empty
+        console.error("Email is empty");
+        toast.error("Email is Empty!");
+        return;
+      }
+      const response = await fetch(`http://localhost:3001/auth/genOTP`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        toast.error("Error Sending OTP", errorData);
+        return;
+      }
+      const OTP = await response.json();
+      toast.success(`OTP Sent To ${email}!`);
+      setSentOTP(OTP); // Store OTP in state
+      return OTP;
+    } catch (error) {
+      toast.error(error.message);
+      return null;
+    }
+  };
+
+  const validateOTP = (userEnteredOTP) => {
+    setDisableRegister(userEnteredOTP !== sentOTP);
+    return userEnteredOTP.trim() === sentOTP.trim();
+  };
+
+  // Usage in your component
+  const handleSendCode = async (email, values) => {
+    const OTP = await sendCode(email);
+    // if (OTP !== null) {
+    //   // Set disableRegister based on OTP validation
+    //   setDisableRegister(!validateOTP(values.otp));
+    // }
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
@@ -346,6 +399,48 @@ const Form = () => {
 
             {/* BUTTONS */}
             <Box>
+              {isRegister && (
+                <Button
+                  fullWidth
+                  type="submit"
+                  sx={{
+                    m: "2rem 0",
+                    p: "1rem",
+                    backgroundColor: "#FA991C",
+                    color: palette.background.alt,
+                    "&:hover": { color: "#1C768F" },
+                  }}
+                  onClick={() => handleSendCode(values.email, values)}
+                >
+                  SEND CODE
+                </Button>
+              )}
+              {isRegister && (
+                <Box display="flex" alignItems="center" gap="10px">
+                  <TextField
+                    label="OTP"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.otp}
+                    name="otp"
+                    error={Boolean(touched.otp) && Boolean(errors.otp)}
+                    helperText={touched.otp && errors.otp}
+                  />
+                  <Button
+                    fullWidth
+                    sx={{
+                      m: "2rem 0",
+                      p: "1rem",
+                      backgroundColor: "#1C768F",
+                      color: palette.background.alt,
+                      "&:hover": { color: "#FA991C" },
+                    }}
+                    onClick={() => validateOTP(values.otp)}
+                  >
+                    VALIDATE OTP
+                  </Button>
+                </Box>
+              )}
               <Button
                 fullWidth
                 type="submit"
@@ -356,6 +451,7 @@ const Form = () => {
                   color: palette.background.alt,
                   "&:hover": { color: "#1C768F" },
                 }}
+                disabled={disableRegister}
               >
                 {isLogin ? "LOGIN" : "REGISTER"}
               </Button>
