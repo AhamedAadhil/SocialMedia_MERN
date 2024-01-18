@@ -55,6 +55,7 @@ const initialValuesLogin = {
 const Form = () => {
   const [pageType, setPageType] = useState("login");
   const [disableRegister, setDisableRegister] = useState(true);
+  const [showOTP, setShowOTP] = useState(false);
   const [sentOTP, setSentOTP] = useState(null);
   const { palette } = useTheme();
   const dispatch = useDispatch();
@@ -172,6 +173,7 @@ const Form = () => {
       const OTP = await response.json();
       toast.success(`OTP Sent To ${email}!`);
       setSentOTP(OTP); // Store OTP in state
+      setShowOTP(true);
       return OTP;
     } catch (error) {
       toast.error(error.message);
@@ -406,7 +408,7 @@ const Form = () => {
                   SEND CODE
                 </Button>
               )}
-              {isRegister && (
+              {isRegister && showOTP && (
                 <Box display="flex" alignItems="center" gap="10px">
                   <TextField
                     label="OTP"
