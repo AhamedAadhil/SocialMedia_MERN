@@ -10,7 +10,7 @@ const FriendListWidget = ({ userId }) => {
   const dispatch = useDispatch();
   const { palette } = useTheme();
   const token = useSelector((state) => state.token);
-  const friends = useSelector((state) => state.user.friends);
+  const friends = useSelector((state) => state.user.friends || []);
   const allGroups = useSelector((state) => state.groups);
 
   const getFriends = async () => {
@@ -23,6 +23,12 @@ const FriendListWidget = ({ userId }) => {
     );
     const data = await response.json();
     dispatch(setFriends({ friends: data }));
+
+    // Check if allUsers is undefined before mapping
+    if (!friends) {
+      // Return some placeholder, loading state, or an empty component
+      return <div>Loading...</div>;
+    }
   };
 
   useEffect(() => {

@@ -274,13 +274,11 @@ export const createGroup = async (req, res) => {
     //all groups
     const allGroups = await Group.find();
 
-    res
-      .status(201)
-      .json({
-        group: savedGroup,
-        allGroups,
-        message: "Group created successfully",
-      });
+    res.status(201).json({
+      group: savedGroup,
+      allGroups,
+      message: "Group created successfully",
+    });
   } catch (error) {
     console.error("Error creating group:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -316,6 +314,26 @@ export const getGroupById = async (req, res) => {
     res.status(200).json(group);
   } catch (error) {
     console.error("Error getting group by ID:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+/* DELETE A GROUP BY ID */
+export const deleteGroupById = async (req, res) => {
+  try {
+    const { groupId } = req.params;
+    const group = await Group.findById(groupId);
+    console.log("GROUPID==", groupId);
+
+    if (!group) {
+      return res
+        .status(400)
+        .json({ groupId, error: "No group with given id." });
+    }
+    const deleteGroup = await Group.findByIdAndDelete(groupId);
+    res.status(200).json(deleteGroup);
+  } catch (error) {
+    console.error("Error Deleting new Group by ID:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
