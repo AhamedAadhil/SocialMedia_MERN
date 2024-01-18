@@ -1,22 +1,18 @@
 import { Typography, useTheme, Divider } from "@mui/material";
-import {
-  DateRangeOutlined,
-  AccessTimeOutlined,
-  LocationOnOutlined,
-} from "@mui/icons-material";
+import { DateRangeOutlined, LocationOnOutlined } from "@mui/icons-material";
 import FlexBetween from "components/FlexBetween";
 import FlexBetween2 from "components/FlexBetween2";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { useEffect } from "react";
 import { setEvent, setGroups } from "state";
 
 const AdvertWidget = () => {
   const { palette } = useTheme();
-  const dark = palette.neutral.dark;
-  const main = palette.neutral.main;
+  // const dark = palette.neutral.dark;
+  // const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
   const dispatch = useDispatch();

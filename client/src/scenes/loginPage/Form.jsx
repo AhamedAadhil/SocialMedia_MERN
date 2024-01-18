@@ -184,15 +184,6 @@ const Form = () => {
     return userEnteredOTP.trim() === sentOTP.trim();
   };
 
-  // Usage in your component
-  const handleSendCode = async (email, values) => {
-    const OTP = await sendCode(email);
-    // if (OTP !== null) {
-    //   // Set disableRegister based on OTP validation
-    //   setDisableRegister(!validateOTP(values.otp));
-    // }
-  };
-
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isLogin) await login(values, onSubmitProps);
     if (isRegister) await register(values, onSubmitProps);
@@ -410,7 +401,7 @@ const Form = () => {
                     color: palette.background.alt,
                     "&:hover": { color: "#1C768F" },
                   }}
-                  onClick={() => handleSendCode(values.email, values)}
+                  onClick={() => sendCode(values.email)}
                 >
                   SEND CODE
                 </Button>
@@ -451,7 +442,7 @@ const Form = () => {
                   color: palette.background.alt,
                   "&:hover": { color: "#1C768F" },
                 }}
-                disabled={disableRegister}
+                disabled={isRegister && disableRegister}
               >
                 {isLogin ? "LOGIN" : "REGISTER"}
               </Button>

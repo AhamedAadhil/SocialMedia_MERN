@@ -2,9 +2,8 @@ import { Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Modal, TextField, Button, Box, IconButton } from "@mui/material";
 import Close from "@mui/icons-material/Close";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { setLogout } from "state";
 
 const CreateEventForm = ({ isOpen, onClose }) => {
   const token = useSelector((state) => state.token);
